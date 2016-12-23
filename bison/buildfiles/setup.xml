@@ -1,0 +1,18 @@
+<!-- necessary setup for a working eclipse neon workspace -->
+
+<project name="setup" default="main" basedir=".">
+
+	<target name="main"
+		description="necessary setup for a working eclipse neon workspace">
+
+		<property name="rootdir" value="${basedir}/../.." />
+
+		<!-- create the folder build/gensrc which is not under source control -->
+		<mkdir dir="${rootdir}/build/gensrc" />
+
+		<!-- run the developer build to get rid of compile errors -->
+		<ant antfile="${rootdir}/build.xml" target="developer-build" dir="${rootdir}"
+			inheritAll="false" useNativeBasedir="true" />
+	</target>
+
+</project>
