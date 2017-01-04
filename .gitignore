@@ -1,0 +1,8 @@
+/bin/
+/build/
+/cachedir/
+/dist/
+/tests/data/
+
+# exclude non distributable .jar files (such as oracle or informix)
+non-distributable/
