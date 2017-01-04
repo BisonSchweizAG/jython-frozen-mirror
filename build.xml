@@ -44,7 +44,7 @@ Actions for a release
 ---------------------
 See http://wiki.python.org/jython/JythonDeveloperGuide/HowToReleaseJython
 
-        	
+
 An example ant.properties file:
 -------------------------------
 
@@ -253,7 +253,7 @@ svnant.jar.dir=${basedir}/../externals/svnant-jars
         <property name="work.dir" value="${basedir}/../full_build/work" />
         <property name="checkout.dir" value="${work.dir}/checkout" />
         <property name="jython.base.dir" value="${checkout.dir}/${hg.code.dir}" />
-    	<!-- set has.repositories.connection to false in ant.properties if you want to skip checkout -->
+        <!-- set has.repositories.connection to false in ant.properties if you want to skip checkout -->
         <property name="has.repositories.connection" value="true" />
         <condition property="do.checkout" value="true">
             <istrue value="${has.repositories.connection}" />
@@ -266,14 +266,16 @@ svnant.jar.dir=${basedir}/../externals/svnant-jars
               <include name="*.jar"/>
             </fileset>
         </path>
-    	<!-- taskdef for svn ant task -->
-    	<taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svn.classpath" />
+        <!-- taskdef for svn ant task -->
+        <taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask" classpathref="svn.classpath" />
     </target>
+    
     <target name="full-check" depends="full-preinit, init, dump-env">
         <!-- Require all of the optional jars for a full build -->
         <fail unless="informix.present" message="informix jar not present" />
         <fail unless="oracle.present" message="oracle jar not present" />
     </target>
+    
     <target name="dump-env" depends="init">
         <echo>.</echo>
         <echo>Build environment for ${ant.project.name}</echo>
@@ -304,7 +306,7 @@ svnant.jar.dir=${basedir}/../externals/svnant-jars
         <echo>--- properties (used for full-build only) ---</echo>
         <echo>svn.main.dir       = '${svn.main.dir}'</echo>
         <echo>svn.revision       = '${svn.revision}'</echo>
-        <echo>checkout.dir   = '${checkout.dir}'</echo>
+        <echo>checkout.dir       = '${checkout.dir}'</echo>
         <echo>javahl.dir         = '${javahl.dir}'</echo>
         <echo>svnant.jar.dir     = '${svnant.jar.dir}'</echo>
         <echo>do.snapshot.build  = '${do.snapshot.build}'</echo>
@@ -346,7 +348,6 @@ svnant.jar.dir=${basedir}/../externals/svnant-jars
             <fileset dir="${work.dir}" includes="jython*.jar" />
         </delete>
     </target>
-
 
     <!-- clean checkout.dir if we really checkout -->
     <target name="clean-checkout-dir" if="do.checkout">
@@ -418,11 +419,13 @@ svnant.jar.dir=${basedir}/../externals/svnant-jars
           <arg line="id -b"/>
         </exec>
     </target>
+    
     <target name="hg-tag" if="hg-run">
         <exec executable="hg" failifexecutionfails="false" outputproperty="build.hg.tag">
           <arg line="id -t"/>
         </exec>
     </target>
+    
     <target name="hg-version" if="hg-run">
         <exec executable="hg" failifexecutionfails="false" outputproperty="build.hg.version">
           <arg line="id -i"/>
@@ -465,7 +468,7 @@ jython.build.hg_version=${build.hg.version}</echo>
 
 This is a snapshot build.
 It reflects the current development status.
-				
+
 The readme text for the next release will be like:
 
             </replacevalue>
@@ -489,7 +492,7 @@ The readme text for the next release will be like:
         <taskdef name="gentempl" classname="org.python.util.TemplateAntTask"
             classpath="${compile.dir}" />
         <gentempl srcdir="${templates.dir}" verbose="true"
-		  lazy="${templates.lazy}"/>
+          lazy="${templates.lazy}"/>
     </target>
 
     <target name="antlr_gen" depends="prepare-output" unless="antlr.notneeded">
@@ -579,9 +582,9 @@ The readme text for the next release will be like:
         <!-- grammar must now be up to date -->
         <property name="antlr.notneeded" value="true" />
 
-	<copy todir="${compile.dir}/META-INF/services">
-	    <fileset dir="${source.dir}/META-INF/services" />
-	</copy>
+    <copy todir="${compile.dir}/META-INF/services">
+        <fileset dir="${source.dir}/META-INF/services" />
+    </copy>
     </target>
 
     <!--
@@ -599,7 +602,6 @@ The readme text for the next release will be like:
              <fileset dir="tests/c" includes="*.c"/>
          </cc>
     </target>
-
 
     <target name="expose" depends="compile">
         <taskdef name="expose" classname="org.python.expose.generate.ExposeTask">
@@ -676,7 +678,7 @@ The readme text for the next release will be like:
         </jarjar>
     </target>
 
-<target name="jar-standalone" depends="jar-complete, copy-lib">
+    <target name="jar-standalone" depends="jar-complete, copy-lib">
         <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="extlibs/jarjar-0.7.jar"/>
         <jarjar destfile="${dist.dir}/${jython.standalone.jar}">
             <zipfileset src="${dist.dir}/${jython.deploy.jar}"/>
@@ -898,8 +900,8 @@ The readme text for the next release will be like:
         <echo>copy installer classes to ${dist.dir}</echo>
         <copy todir="${dist.dir}" preservelastmodified="true">
             <fileset dir="${compile.dir}">
-            	<include name="org/python/util/install/**/*.class" />
-            	<include name="org/apache/commons/cli/*.class" />
+                <include name="org/python/util/install/**/*.class" />
+                <include name="org/apache/commons/cli/*.class" />
             </fileset>
         </copy>
         <copy file="${install.src.dir}/org/apache/LICENSE.txt" tofile="${dist.dir}/LICENSE_Apache.txt" preservelastmodified="true" />
@@ -952,6 +954,7 @@ The readme text for the next release will be like:
     </target>
 
     <target name="test" depends="prepare-test,javatest,launchertest,regrtest,modjytest" description="run all the tests"/>
+    
     <target name="singlejavatest" depends="compile,expose" description="run a single JUnit test (specify with -Dtest=classname)">
         <junit haltonfailure="true" fork="true">
             <formatter type="brief" usefile="false"/>
@@ -963,10 +966,12 @@ The readme text for the next release will be like:
             </batchtest>
         </junit>
     </target>
+    
     <target name="prepare-test" depends="init">
         <!-- Clean any old test output -->
         <delete dir="${junit.reports}"/>
     </target>
+    
     <target name="javatest" depends="developer-build" description="run all the JUnit tests">
         <mkdir dir="${junit.reports}"/>
         <junit fork="true" printsummary="true">
@@ -985,6 +990,7 @@ The readme text for the next release will be like:
             </batchtest>
         </junit>
     </target>
+    
     <target name="importest" depends="developer-build" description="run all the JUnit tests that need tests/python in the path.">
         <mkdir dir="${junit.reports}"/>
         <junit fork="true" printsummary="true">
@@ -1002,6 +1008,7 @@ The readme text for the next release will be like:
             </batchtest>
         </junit>
     </target>
+    
     <target name="idxtest" depends="developer-build">
         <mkdir dir="${junit.reports}"/>
         <junit fork="true" printsummary="true" showoutput="true">
@@ -1046,18 +1053,22 @@ The readme text for the next release will be like:
             </batchtest>
         </junit>
     </target>
+    
     <target name="modjytest" depends="developer-build">
         <ant dir="tests/modjy">
             <property name="jython_home" value="${dist.dir}"/>
             <property name="mockrunner_home" value="${extlibs.dir}/mockrunner-0.4.1"/>
         </ant>
     </target>
+    
     <target name="launchertest" depends="developer-build" if="os.family.unix">
       <exec executable="${test.shell.dir}/test-jython.sh">
         <arg value="${dist.dir}"/>
       </exec>
     </target>
+    
     <target name="regrtest" depends="developer-build,regrtest-unix,regrtest-windows" description="run Python tests expected to work on Jython"/>
+    
     <target name="regrtest-unix" if="os.family.unix">
       <exec executable="${dist.dir}/bin/jython">
         <arg value="${dist.dir}/Lib/test/regrtest.py"/>
@@ -1067,6 +1078,7 @@ The readme text for the next release will be like:
         <arg value="${junit.reports}"/>
       </exec>
     </target>
+    
     <target name="regrtest-windows" if="os.family.windows">
       <exec executable="${dist.dir}/bin/jython.bat">
         <arg value="${dist.dir}/Lib/test/regrtest.py"/>
@@ -1086,10 +1098,10 @@ The readme text for the next release will be like:
             </classpath>
             <jvmarg value="-Dpython.home=${dist.dir}"/>
             <arg value="driver.py"/>
-         	<!-- uncomment if you want to run only one test: -->
-         	<!--
-         	<arg value="386"/>
-         	-->
+            <!-- uncomment if you want to run only one test: -->
+            <!--
+            <arg value="386"/>
+            -->
         </java>
     </target>
 
