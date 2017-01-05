@@ -6,14 +6,14 @@
 - add and set the default JDK to 1.7 (not higher)
 - set the compiler compliance level to 1.6
 - add the clone to the git perspective and import the project
-- run the `setup` launch configuration (in `/bison/launch.configs/`) (run again in case of an initial build failure)
+- run the `setup` launch configuration (in `/bison/launch.configs/`) <br/>(run again in case of an initial build failure)
 
 
 ## Build and test as a developer
 
-- run the `build developer` launch configuration (the first run just after `clean` might fail - run again in this case)
-- run the `javatests` launch configuration
-- run the `regrtests` launch confguration
+- run the `build developer` launch configuration <br/>(the first run just after `clean` might fail - run again in this case)
+- run the `javatests` launch configuration <br/>(`ImportTests#testImportFromJava` currently fails with "No module named testpkg.submodule")
+- run the `regrtests` launch confguration <br/>(on Mac: eagerly picks JDK 9 if installed and stops in `test_urllib2_localnet.py` with: "cannot access class sun.nio.ch.ServerSocketAdaptor (in module java.base) because module java.base does not export sun.nio.ch to unnamed module @b1712f3")
 
 
 ## Build a deployable version 
@@ -23,8 +23,7 @@
  
 ## TODO (work in progress)
  - find out the correct names for the artifactory jars (and define them in `ant.properties`)
- - cherry-pick the `vfs` fix from `master` to `r2.5.3`
- - apply the bison specific changes `to r2.5.3.bison`
+ - apply the bison specific changes to `r2.5.3.bison`
  - document oracle.jar (`/bison/non-distributable`)
  - document informix.jar (`/bison/non-distributable`)
  - (if necessary at all:) eliminate the need to copy to the `checkout` dir manually for the full build
