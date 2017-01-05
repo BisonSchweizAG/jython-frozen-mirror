@@ -123,7 +123,7 @@ public final class Py {
     }
 
     /**
-     * @deprecated As of Jython 2.5.3, use {@link #OSerror(Constant, PyObject)} instead.
+     * @deprecated As of Jython 2.5.3, use {@link #OSError(Constant, PyObject)} instead.
      */
     @Deprecated
     public static PyException OSError(Constant errno, String filename) {
