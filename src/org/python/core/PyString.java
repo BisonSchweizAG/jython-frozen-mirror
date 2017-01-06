@@ -2917,6 +2917,14 @@ final class StringFormatter
                         string = arg.__str__().toString();
                 else
                     string = arg.__repr__().toString();
+                // be tolerant if string is a java type
+                if (!needUnicode) {
+                    if (arg.getType() instanceof PyJavaType) {
+                        if (isOutsideAscii(string)) {
+                            needUnicode = true;
+                        }
+                    }
+                }
                 if (precision >= 0 && string.length() > precision) {
                     string = string.substring(0, precision);
                 }
@@ -3121,6 +3129,17 @@ final class StringFormatter
             return new PyUnicode(buffer);
         }
         return new PyString(buffer);
+    }
+
+    private static final boolean isOutsideAscii(final String str) {
+        final int size = str.length();
+        for (int i = 0; i < size; i++) {
+            char ch = str.charAt(i);
+            if (ch > 128) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
