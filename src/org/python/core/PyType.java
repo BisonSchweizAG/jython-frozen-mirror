@@ -32,6 +32,8 @@ public class PyType extends PyObject implements Serializable {
 
     public static PyType TYPE = fromClass(PyType.class);
 
+    private static final String SUPER__ = "super__";
+
     /**
      * The type's name. builtin types include their fully qualified name, e.g.:
      * time.struct_time.
@@ -1147,6 +1149,20 @@ public class PyType extends PyObject implements Serializable {
                         where[0] = t;
                     }
                     return obj;
+                } else {
+                    // deviation for protected final java superclass methods
+                    if (t instanceof PyJavaType) {
+                        if (!name.startsWith(SUPER__)) {
+                            final String superName = SUPER__.concat(name);
+                            obj = dict.__finditem__(superName);
+                            if (obj != null) {
+                                if (where != null) {
+                                    where[0] = t;
+                                }
+                                return obj;
+                            }
+                        }
+                    }
                 }
             }
         }
