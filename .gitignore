@@ -6,3 +6,5 @@
 
 # exclude non distributable .jar files (such as oracle or informix)
 non-distributable/
+
+.pydevproject
