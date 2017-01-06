@@ -23,13 +23,23 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Queue;
+import java.util.Set;
 
 import org.python.core.util.StringUtil;
 import org.python.util.Generic;
 
 public class PyJavaType extends PyType {
+
+    private static Class<?> _noBeanPropertiesMarker;
+
+    static {
+        try {
+            _noBeanPropertiesMarker = Class.forName("CH.obj.commons.core.util.jython.JythonNoBeanProperties");
+        } catch (ClassNotFoundException e) {
+            _noBeanPropertiesMarker = javax.sql.rowset.serial.SerialBlob.class;
+        }
+    }
 
     private final static Class<?>[] OO = {PyObject.class, PyObject.class};
 
@@ -341,26 +351,30 @@ public class PyJavaType extends PyType {
                 get = false;
             }
             if (beanPropertyName != null) {
-                beanPropertyName = normalize(StringUtil.decapitalize(beanPropertyName));
-                PyBeanProperty prop = props.get(beanPropertyName);
-                if (prop == null) {
-                    prop = new PyBeanProperty(beanPropertyName, null, null, null);
-                    props.put(beanPropertyName, prop);
-                }
-                if (get) {
-                    prop.getMethod = meth;
-                    prop.myType = meth.getReturnType();
-                } else {
-                    prop.setMethod = meth;
-                    // Needed for readonly properties.  Getter will be used instead
-                    // if there is one.  Only works if setX method has exactly one
-                    // param, which is the only reasonable case.
-                    // XXX: should we issue a warning if setX and getX have different
-                    // types?
-                    if (prop.myType == null) {
-                        Class[] params = meth.getParameterTypes();
-                        if (params.length == 1) {
-                            prop.myType = params[0];
+                // suppress bean properties if so declared
+                Class<?> declaringClass = meth.getDeclaringClass();
+                if (!_noBeanPropertiesMarker.isAssignableFrom(declaringClass)) {
+                    beanPropertyName = normalize(StringUtil.decapitalize(beanPropertyName));
+                    PyBeanProperty prop = props.get(beanPropertyName);
+                    if (prop == null) {
+                        prop = new PyBeanProperty(beanPropertyName, null, null, null);
+                        props.put(beanPropertyName, prop);
+                    }
+                    if (get) {
+                        prop.getMethod = meth;
+                        prop.myType = meth.getReturnType();
+                    } else {
+                        prop.setMethod = meth;
+                        // Needed for readonly properties. Getter will be used instead
+                        // if there is one. Only works if setX method has exactly one
+                        // param, which is the only reasonable case.
+                        // XXX: should we issue a warning if setX and getX have different
+                        // types?
+                        if (prop.myType == null) {
+                            Class[] params = meth.getParameterTypes();
+                            if (params.length == 1) {
+                                prop.myType = params[0];
+                            }
                         }
                     }
                 }
