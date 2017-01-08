@@ -781,7 +781,7 @@ The readme text for the next release will be like:
             <fileset dir="${dist.dir}/artifactory" includes="**/*" />
         </delete>
 		<copy file="${dist.dir}/${jython.standalone.jar}" tofile="${dist.dir}/artifactory/${jython.artifactory.jar}"         preservelastmodified="true" verbose="true" />
-        <copy file="${dist.dir}/${jython.sources.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.source.jar}"  preservelastmodified="true" verbose="true" />
+        <copy file="${dist.dir}/${jython.sources.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.sources.jar}" preservelastmodified="true" verbose="true" />
         <copy file="${dist.dir}/${jython.javadoc.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.javadoc.jar}" preservelastmodified="true" verbose="true" />
 	</target>
 	
