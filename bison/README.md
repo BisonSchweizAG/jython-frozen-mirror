@@ -1,8 +1,8 @@
 ## How to get a green Eclipse Neon workspace
 
-- `git clone https://github.com/BisonSchweizAG/jython.git`
+- `git clone git@github.com:BisonSchweizAG/jython.git`
 - `git checkout r2.5.3.bison`
-- open an empty Eclipse neon workspace
+- use a Neon installation without the Bison tools plugin: open an empty workspace
 - add and set the default JDK to 1.7 (not higher)
 - set the compiler compliance level to 1.6
 - add the clone to the git perspective and import the project
@@ -22,6 +22,7 @@
 
  
 ## TODO (work in progress)
+ - document how to import the formatting settings
  - find out the correct names for the artifactory jars (and define them in `ant.properties`)
  - apply the bison specific changes to `r2.5.3.bison`
  - document oracle.jar (`/bison/non-distributable`)
