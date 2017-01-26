@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -18,14 +19,12 @@ import java.nio.charset.UnsupportedCharsetException;
 import java.security.AccessControlException;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import org.jruby.ext.posix.util.Platform;
 import org.python.Version;
@@ -50,11 +49,6 @@ public class PySystemState extends PyObject implements ClassDictInit {
 
     public static final String JYTHON_JAR = "jython.jar";
     public static final String JYTHON_DEV_JAR = "jython-dev.jar";
-
-    private static final String JAR_URL_PREFIX = "jar:file:";
-    private static final String JAR_SEPARATOR = "!";
-    private static final String VFSZIP_PREFIX = "vfszip:";
-    private static final String VFS_PREFIX = "vfs:";
 
     public static final PyString version = new PyString(Version.getVersion());
     public static final int hexversion = ((Version.PY_MAJOR_VERSION << 24) |
@@ -873,11 +867,9 @@ public class PySystemState extends PyObject implements ClassDictInit {
         }
         initialized = true;
         Py.setAdapter(adapter);
-        boolean standalone = false;
-        String jarFileName = getJarFileName();
-        if (jarFileName != null) {
-            standalone = isStandalone(jarFileName);
-        }
+        final boolean standalone = isStandalone();
+        URL locationUrl = PySystemState.class.getProtectionDomain().getCodeSource().getLocation();
+        final String jarFileName = getJarFileNameFromURL(locationUrl);
         // initialize the Jython registry
         initRegistry(preProperties, postProperties, standalone, jarFileName);
         // other initializations
@@ -1085,87 +1077,47 @@ public class PySystemState extends PyObject implements ClassDictInit {
     /**
      * Check if we are in standalone mode.
      *
-     * @param jarFileName The name of the jar file
-     *
      * @return <code>true</code> if we have a standalone .jar file, <code>false</code> otherwise.
      */
-    private static boolean isStandalone(String jarFileName) {
+    private static boolean isStandalone() {
         boolean standalone = false;
-        if (jarFileName != null) {
-            JarFile jarFile = null;
-            try {
-                jarFile = new JarFile(jarFileName);
-                JarEntry jarEntry = jarFile.getJarEntry("Lib/os.py");
-                standalone = jarEntry != null;
-            } catch (IOException ioe) {
-            } finally {
-                if (jarFile != null) {
-                    try {
-                        jarFile.close();
-                    } catch (IOException e) {
-                    }
-                }
+        URL url = PySystemState.class.getResource("/Lib/os.py");
+        if (url != null) {
+            String path = url.getPath();
+            if (path.contains(JYTHON_JAR)) {
+                standalone = true;
+            } else if (path.endsWith(".jar!/Lib/os.py")) {
+                standalone = true;
             }
         }
         return standalone;
     }
 
     /**
-     * @return the full name of the jar file containing this class, <code>null</code> if not available.
+     * 
+     * @param url
+     *            the protection domain code source location url
+     * 
+     * @return the full name (absolute path) of the jar file containing this class, <code>null</code> if not available.
      */
-    private static String getJarFileName() {
-        Class<PySystemState> thisClass = PySystemState.class;
-        String fullClassName = thisClass.getName();
-        String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
-        URL url = thisClass.getResource(className + ".class");
-        return getJarFileNameFromURL(url);
-    }
-
     protected static String getJarFileNameFromURL(URL url) {
         String jarFileName = null;
         if (url != null) {
             try {
-                // escape plus signs, since the URLDecoder would turn them into spaces
-                final String plus = "\\+";
-                final String escapedPlus = "__ppluss__";
-                String rawUrl = url.toString();
-                rawUrl = rawUrl.replaceAll(plus, escapedPlus);
-                String urlString = URLDecoder.decode(rawUrl, "UTF-8");
-                urlString = urlString.replaceAll(escapedPlus, plus);
-                int jarSeparatorIndex = urlString.lastIndexOf(JAR_SEPARATOR);
-                if (urlString.startsWith(JAR_URL_PREFIX) && jarSeparatorIndex > 0) {
-                    // jar:file:/install_dir/jython.jar!/org/python/core/PySystemState.class
-                    jarFileName = urlString.substring(JAR_URL_PREFIX.length(), jarSeparatorIndex);
-                } else if (urlString.startsWith(VFSZIP_PREFIX)) {
-                    // vfszip:/some/path/jython.jar/org/python/core/PySystemState.class
-                    final String path = PySystemState.class.getName().replace('.', '/');
-                    int jarIndex = urlString.indexOf(".jar/".concat(path));
-                    if (jarIndex > 0) {
-                        jarIndex += 4;
-                        int start = VFSZIP_PREFIX.length();
-                        if (Platform.IS_WINDOWS) {
-                            // vfszip:/C:/some/path/jython.jar/org/python/core/PySystemState.class
-                            start++;
-                        }
-                        jarFileName = urlString.substring(start, jarIndex);
-                    }
-                } else if (urlString.startsWith(VFS_PREFIX)) {
-                    // vfs:/some/path/jython.jar/org/python/core/PySystemState.class
-                    final String path = PySystemState.class.getName().replace('.', '/');
-                    int jarIndex = urlString.indexOf(".jar/".concat(path));
-                    if (jarIndex > 0) {
-                        jarIndex += 4;
-                        int start = VFS_PREFIX.length();
-                        if (Platform.IS_WINDOWS) {
-                            // vfs:/C:/some/path/jython.jar/org/python/core/PySystemState.class
-                            start++;
-                        }
-                        jarFileName = urlString.substring(start, jarIndex);
-                    }
+                String path = url.getPath();
+                if (path.endsWith(".jar")) {
+                    jarFileName = decodeUrlString(path);
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
         return jarFileName;
+    }
+
+    private static String decodeUrlString(String url) throws UnsupportedEncodingException {
+        final String plus = "\\+";
+        final String ePlus = "__ppluss__"; // escape around decoding
+        return URLDecoder.decode(url.replaceAll(plus, ePlus), "UTF-8").replaceAll(ePlus, plus);
     }
 
     private static void addPaths(PyList path, String pypath) {
