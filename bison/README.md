@@ -18,8 +18,15 @@
 
 
 ## Build a deployable version 
- - run the `build artifactory` launch configuration
- - deploy the 3 `.jar` files plus the `.pom` file (?) from the directory `/dist/artifactory/` to the `/ext-libs-local-modified/org/python/jython` artifactory folder (into the correct version subfolder)
+* run the `build artifactory` launch configuration
+* deploy `/dist/artifactory/jython*.jar` to `/ext-libs-local-modified/org/python/jython`
+  * check the Deploy as Maven Artifact checkbox
+* deploy `/dist/artifactory/jython*-sources.jar` to `/ext-libs-local-modified/org/python/jython`
+  * check the Deploy as Maven Artifact checkbox
+  * add the classifier `sources`
+* deploy `/dist/artifactory/jython*-javadoc.jar` to `/ext-libs-local-modified/org/python/jython`
+  * check the Deploy as Maven Artifact checkbox
+  * add the classifier `javadoc`
 
  
 ## TODO (work in progress)
