@@ -30,9 +30,8 @@
 
  
 ## TODO (work in progress)
- - find out how to correctly deploy the jython jars to artifactory
- - adjust the artifactory build target accordingly
- - find out the correct names for the artifactory jars (and define them in `ant.properties`)
+ - find out how to correctly deploy the jython jars to artifactory (currently resolving of the binary jar works, but resolving of sources and javadoc is not working)
+ - adjust the artifactory build target accordingly (if necessary)
  - apply the bison specific changes / the cherry-picked fix for Issue 2487 (see http://darjus.blogspot.ch/2016/08/jython-release-delay-and-deadlocks.html)`
  - document oracle.jar (`/bison/non-distributable`)
  - document informix.jar (`/bison/non-distributable`)
