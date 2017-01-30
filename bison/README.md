@@ -30,6 +30,7 @@
 
  
 ## TODO (work in progress)
+ - double check the protection domain URL when starting the WildFly container (on windows and on Linux)
  - find out how to correctly deploy the jython jars to artifactory
  - adjust the artifactory build target accordingly
  - find out the correct names for the artifactory jars (and define them in `ant.properties`)
