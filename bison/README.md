@@ -30,6 +30,7 @@
 
  
 ## TODO (work in progress)
+ - double check the protection domain URL when starting the WildFly container (on windows and on Linux)
  - find out how to correctly deploy the jython jars to artifactory (currently resolving of the binary jar works, but resolving of sources and javadoc is not working)
  - adjust the artifactory build target accordingly (if necessary)
  - apply the bison specific changes / the cherry-picked fix for Issue 2487 (see http://darjus.blogspot.ch/2016/08/jython-release-delay-and-deadlocks.html)`
