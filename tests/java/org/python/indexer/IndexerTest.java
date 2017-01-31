@@ -4,6 +4,7 @@
  */
 package org.python.indexer;
 
+import org.jruby.ext.posix.util.Platform;
 import org.python.indexer.Indexer;
 import org.python.indexer.NBinding;
 import org.python.indexer.Scope;
@@ -257,6 +258,10 @@ public class IndexerTest extends TestBase {
         ast = cache.getSerializedModule(sourcePath);
         assertNotNull(ast);
 
+        if (Platform.IS_WINDOWS) {
+            // we do not want to change the indexer code - therefore adjust the expectations on Windows
+            sourcePath = sourcePath.replace("/", "\\");
+        }
         assertEquals(sourcePath, ast.getFile());
     }
 

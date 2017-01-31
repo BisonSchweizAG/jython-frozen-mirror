@@ -6,9 +6,9 @@ package org.python.indexer;
 
 import junit.framework.TestCase;
 
+import org.jruby.ext.posix.util.Platform;
 import org.python.indexer.Def;
 import org.python.indexer.Ref;
-import org.python.indexer.ast.NNode;
 import org.python.indexer.types.NType;
 import org.python.indexer.types.NUnknownType;
 
@@ -177,9 +177,20 @@ public class TestBase extends TestCase {
 
     public void testIndexerDefaults() throws Exception {
         includeStandardLibrary();
-        assertEquals("wrong project dir", TEST_DATA_DIR, idx.projDir);
+        String projectDir = idx.projDir;
+        if (Platform.IS_WINDOWS) {
+            // we do not want to change the indexer code - therefore adjust the expectations on Windows
+            projectDir = projectDir.replace("\\tests\\java\\org\\python\\indexer\\", "/tests/java/org/python/indexer/");
+            projectDir = projectDir.replace("\\dist\\", "/dist/");
+        }
+        assertEquals("wrong project dir", TEST_DATA_DIR, projectDir);
         assertEquals("unexpected load path entries", 1, idx.path.size());
-        assertEquals(TEST_LIB_DIR, idx.path.get(0));
+        String idxPath0 = idx.path.get(0);
+        if (Platform.IS_WINDOWS) {
+            // we do not want to change the indexer code - therefore adjust the expectations on Windows
+            idxPath0 = idxPath0.replace("\\dist\\", "/dist/");
+        }
+        assertEquals(TEST_LIB_DIR, idxPath0);
     }
 
     // utilities
@@ -367,7 +378,7 @@ public class TestBase extends TestCase {
         return b;
     }
 
-    public NBinding assertBindingType(String bindingQname, Class type) throws Exception {
+    public NBinding assertBindingType(String bindingQname, Class<?> type) throws Exception {
         NBinding b = getBinding(bindingQname);
         NType btype = NUnknownType.follow(b.getType());
         assertTrue("Wrong type: expected " + type + " but was " + btype,
@@ -410,10 +421,10 @@ public class TestBase extends TestCase {
         }
 
         // XXX:  we've disabled support for NInstanceType for now
-        NBinding b = getBinding(bindingQname);
-        NType btype = b.followType();
-        assertTrue(btype.isInstanceType());
-        NType ctype = getTypeBinding(classQname);
-        assertEquals(btype.asInstanceType().getClassType(), ctype);
+        //NBinding b = getBinding(bindingQname);
+        //NType btype = b.followType();
+        //assertTrue(btype.isInstanceType());
+        //NType ctype = getTypeBinding(classQname);
+        //assertEquals(btype.asInstanceType().getClassType(), ctype);
     }
 }
