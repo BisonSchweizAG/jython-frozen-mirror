@@ -181,7 +181,6 @@ public class TestBase extends TestCase {
         if (Platform.IS_WINDOWS) {
             // we do not want to change the indexer code - therefore adjust the expectations on Windows
             projectDir = projectDir.replace("\\tests\\java\\org\\python\\indexer\\", "/tests/java/org/python/indexer/");
-            projectDir = projectDir.replace("\\dist\\", "/dist/");
         }
         assertEquals("wrong project dir", TEST_DATA_DIR, projectDir);
         assertEquals("unexpected load path entries", 1, idx.path.size());
