@@ -28,12 +28,21 @@
   * check the Deploy as Maven Artifact checkbox
   * add the classifier `javadoc`
 
+
+## (very) short summary of the changes to 2.5.3
+* see also: `git diff r2.5.3`
+* `PyJavaType.java`: No bean properties marker, e.g. for dynamic entity views
+* `PyString.java`: StringFormatter automatically switches to unicode for java types (if range is outside ascii)
+* `PyType.java`: Deviation for `protected final` java superclass methods
+* `PySystemState.java`: Improvements for standalone recognition using protection domain URK (e.g. for WildFly virtual file system)
+* `Lib/string.py`: Still added for backwards compatibility
+
  
 ## TODO (work in progress)
  - double check the protection domain URL when starting the WildFly container (on windows and on Linux)
  - find out how to correctly deploy the jython jars to artifactory (currently resolving of the binary jar works, but resolving of sources and javadoc is not working)
  - adjust the artifactory build target accordingly (if necessary)
- - apply the bison specific changes / the cherry-picked fix for Issue 2487 (see http://darjus.blogspot.ch/2016/08/jython-release-delay-and-deadlocks.html)`
+ - cherry pick and test the fix for Issue 2487 (see http://darjus.blogspot.ch/2016/08/jython-release-delay-and-deadlocks.html)
  - document oracle.jar (`/bison/non-distributable`)
  - document informix.jar (`/bison/non-distributable`)
  - (if necessary at all:) eliminate the need to copy to the `checkout` dir manually for the full build
