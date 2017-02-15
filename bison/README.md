@@ -34,7 +34,7 @@
 * `PyJavaType.java`: No bean properties marker, e.g. for dynamic entity views
 * `PyString.java`: StringFormatter automatically switches to unicode for java types (if range is outside ascii)
 * `PyType.java`: Deviation for `protected final` java superclass methods
-* `PySystemState.java`: Improvements for standalone recognition using protection domain URK (e.g. for WildFly virtual file system)
+* `PySystemState.java`: Improvements for standalone recognition using protection domain URL (e.g. for WildFly virtual file system)
 * `Lib/string.py`: Still added for backwards compatibility
 
  
