@@ -556,13 +556,19 @@ public class PyJavaType extends PyType {
             }
         }
         if (baseClass != Object.class) {
-            hasGet = getDescrMethod(forClass, "__get__", OO) != null
-                    || getDescrMethod(forClass, "_doget", PyObject.class) != null
-                    || getDescrMethod(forClass, "_doget", OO) != null;
-            hasSet = getDescrMethod(forClass, "__set__", OO) != null
-                    || getDescrMethod(forClass, "_doset", OO) != null;
-            hasDelete = getDescrMethod(forClass, "__delete__", PyObject.class) != null
-                    || getDescrMethod(forClass, "_dodel", PyObject.class) != null;
+            if (shouldPerformDeepCheckForDescrMethods(forClass)) {
+                hasGet = getDescrMethod(forClass, "__get__", OO) != null
+                                || getDescrMethod(forClass, "_doget", PyObject.class) != null
+                                || getDescrMethod(forClass, "_doget", OO) != null;
+                hasSet = getDescrMethod(forClass, "__set__", OO) != null
+                                || getDescrMethod(forClass, "_doset", OO) != null;
+                hasDelete = getDescrMethod(forClass, "__delete__", PyObject.class) != null
+                                || getDescrMethod(forClass, "_dodel", PyObject.class) != null;
+            } else {
+                hasGet = false;
+                hasSet = false;
+                hasDelete = false;
+            }
         }
         if (forClass == Object.class) {
 
@@ -843,6 +849,21 @@ public class PyJavaType extends PyType {
             return meth;
         }
         return null;
+    }
+    
+    private static boolean shouldPerformDeepCheckForDescrMethods(Class<?> c) {
+        boolean deepCheck = true;
+        String className = c.getName();
+        if (className.startsWith("CH.")) {
+            deepCheck = false;
+        } else if (className.startsWith("tech.bison.")) {
+            deepCheck = false;
+        } else if (className.startsWith("java.")) {
+            deepCheck = false;
+        } else if (className.startsWith("javax.")) {
+            deepCheck = false;
+        }
+        return deepCheck;
     }
 
     private static boolean ignore(Method meth) {

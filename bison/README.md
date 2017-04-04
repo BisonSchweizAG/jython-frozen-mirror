@@ -44,6 +44,7 @@
 ## (very) short summary of the changes to 2.5.3
 * see also: `git diff r2.5.3`
 * `PyJavaType.java`: No bean properties marker, e.g. for dynamic entity views
+* `PyJavaType.java`: Suppress the `try/catch` method lookup for packages which clearly don't have methods `__get__`, `_doget` etc. declared
 * `PyString.java`: StringFormatter automatically switches to unicode for java types (if range is outside ascii)
 * `PyType.java`: Deviation for `protected final` java superclass methods
 * `PySystemState.java`: Improvements for standalone recognition using protection domain URL (e.g. for WildFly virtual file system)
