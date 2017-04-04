@@ -15,6 +15,18 @@
 - run the `build developer` launch configuration <br/>(the first run just after `clean` might fail - run again in this case)
 - run the `javatests` launch configuration
 - run the `regrtests` launch confguration <br/>(on Mac: eagerly picks JDK 9 if installed and stops in `test_urllib2_localnet.py` with: "cannot access class sun.nio.ch.ServerSocketAdaptor (in module java.base) because module java.base does not export sun.nio.ch to unnamed module @b1712f3")
+- on Ubuntu, the result of the 'regrtests' is as follows:
+```
+     [exec] 3 tests skipped:
+     [exec]     test_subprocess test_urllib2net test_urllibnet
+     [exec] 7 tests failed:
+     [exec]     test_float_jy test_import_jy test_marshal test_platform
+     [exec]     test_socket test_sort test_traceback
+     [exec] 7 fails unexpected:
+     [exec]     test_float_jy test_import_jy test_marshal test_platform
+     [exec]     test_socket test_sort test_traceback
+     [exec] Result: 1
+```
 
 
 ## Build a deployable version 
