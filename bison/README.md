@@ -31,14 +31,28 @@
 
 ## Build a deployable version 
 * run the `build artifactory` launch configuration
-* deploy `/dist/artifactory/jython*.jar` to `/ext-libs-local-modified/org/python/jython`
-  * check the Deploy as Maven Artifact checkbox
 * deploy `/dist/artifactory/jython*-sources.jar` to `/ext-libs-local-modified/org/python/jython`
   * check the Deploy as Maven Artifact checkbox
-  * add the classifier `sources`
+  * Group ID: `org.python`
+  * Artifact ID: `jython`
+  * Version: the actual version (from ant.properties)
+  * Classifier: `sources`
+  * Type: `jar`
 * deploy `/dist/artifactory/jython*-javadoc.jar` to `/ext-libs-local-modified/org/python/jython`
   * check the Deploy as Maven Artifact checkbox
-  * add the classifier `javadoc`
+  * Group ID: `org.python`
+  * Artifact ID: `jython`
+  * Version: the actual version (from ant.properties)
+  * Classifier: `javadoc`
+  * Type: `jar`
+* deploy `/dist/artifactory/jython*.jar` to `/ext-libs-local-modified/org/python/jython`
+  * check the Deploy as Maven Artifact checkbox
+  * do not be afraid if completely wrong IDs appear (`jline`) - simply overwrite them like indicated below
+  * Group ID: `org.python`
+  * Artifact ID: `jython`
+  * Version: the actual version (from ant.properties)
+  * leave Classifier empty 
+  * Type: `jar`
 
 
 ## (very) short summary of the changes to 2.5.3
