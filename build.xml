@@ -775,16 +775,25 @@ The readme text for the next release will be like:
         </jar>
     </target>
 
-	<target name="artifactory" depends="all-jars">
+    <target name="artifactory" depends="developer-build, all-jars, remove-precompiled-files">
         <mkdir dir="${dist.dir}/artifactory" />
         <delete includeemptydirs="false" failonerror="false">
             <fileset dir="${dist.dir}/artifactory" includes="**/*" />
         </delete>
-		<copy file="${dist.dir}/${jython.standalone.jar}" tofile="${dist.dir}/artifactory/${jython.artifactory.jar}"         preservelastmodified="true" verbose="true" />
+        <copy file="${dist.dir}/${jython.standalone.jar}" tofile="${dist.dir}/artifactory/${jython.artifactory.jar}"         preservelastmodified="true" verbose="true" />
         <copy file="${dist.dir}/${jython.sources.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.sources.jar}" preservelastmodified="true" verbose="true" />
         <copy file="${dist.dir}/${jython.javadoc.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.javadoc.jar}" preservelastmodified="true" verbose="true" />
-	</target>
-	
+    </target>
+
+    <target name="remove-precompiled-files">
+        <jar destfile="${dist.dir}/temp/${jython.standalone.jar}">
+            <zipfileset src="${dist.dir}/${jython.standalone.jar}" 
+                excludes="**/*$py.class, javatests/**, ch/**, shell/**, templates/**">
+            </zipfileset>
+        </jar>
+        <copy file="${dist.dir}/temp/${jython.standalone.jar}" tofile="${dist.dir}/${jython.standalone.jar}" overwrite="true" preservelastmodified="true" verbose="true" />
+    </target>
+
     <target name="copy-license" if="do.checkout">
         <echo>copy CPython LICENSE from ${checkout.dir}/python</echo>
         <copy file="${checkout.dir}/python/LICENSE" tofile="${dist.dir}/LICENSE_CPython.txt" preservelastmodified="true" />
