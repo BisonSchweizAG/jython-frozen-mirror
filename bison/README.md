@@ -1,12 +1,13 @@
-## How to get a green Eclipse Neon workspace
+## How to get a green Eclipse workspace
 
 - `git clone git@github.com:BisonSchweizAG/jython.git`
 - `git checkout r2.5.3.bison`
-- use a Neon installation without the Bison tools plugin: open an empty workspace
+- use a current eclipse installation without the Bison tools plugin: open an empty workspace
 - add and set the default JDK to 1.7 (not higher)
 - set the compiler compliance level to 1.6
 - add the clone to the git perspective and import the project
-- go to Window -> Preferences -> Java -> Code Style -> Formatter, and import `/bison/formatting/Jython-like.xml` 
+- go to Window -> Preferences -> Java -> Code Style -> Formatter, and import `/bison/formatting/Jython-like.xml`
+- set the `jdk7.command` property in `ant.properties`, e.g: `/usr/lib/jvm/jdk1.7.0_79/bin/java`
 - run the `setup` launch configuration (in `/bison/launch.configs/`) <br/>(run again in case of an initial build failure)
 
 
@@ -17,6 +18,7 @@
 - run the `regrtests` launch confguration <br/>(on Mac: eagerly picks JDK 9 if installed and stops in `test_urllib2_localnet.py` with: "cannot access class sun.nio.ch.ServerSocketAdaptor (in module java.base) because module java.base does not export sun.nio.ch to unnamed module @b1712f3")
 - on Ubuntu, the result of the 'regrtests' is as follows:
 ```
+     [exec] 323 tests OK.
      [exec] 3 tests skipped:
      [exec]     test_subprocess test_urllib2net test_urllibnet
      [exec] 7 tests failed:

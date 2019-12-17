@@ -1,9 +1,7 @@
-<!-- necessary setup for a working eclipse neon workspace -->
-
 <project name="setup" default="main" basedir=".">
 
 	<target name="main"
-		description="necessary setup for a working eclipse neon workspace">
+		description="necessary setup for a working eclipse 2019-09 workspace">
 
 		<property name="rootdir" value="${basedir}/../.." />
 
