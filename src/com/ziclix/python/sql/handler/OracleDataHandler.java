@@ -17,7 +17,6 @@ import java.sql.Types;
 
 import oracle.jdbc.OracleResultSet;
 import oracle.jdbc.OracleTypes;
-import oracle.sql.BLOB;
 import oracle.sql.ROWID;
 
 import org.python.core.Py;
@@ -160,11 +159,6 @@ public class OracleDataHandler extends FilterDataHandler {
                             ? PyInteger.TYPE.__call__(Py.newString(number))
                             : Py.newDecimal(number);
                 }
-                break;
-
-            case Types.BLOB:
-                BLOB blob = ((OracleResultSet) set).getBLOB(col);
-                obj = blob == null ? Py.None : Py.java2py(read(blob.getBinaryStream()));
                 break;
 
             case OracleTypes.TIMESTAMPLTZ:

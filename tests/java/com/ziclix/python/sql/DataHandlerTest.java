@@ -40,7 +40,10 @@ public class DataHandlerTest extends TestCase {
                                                       "DISTINCT",
                                                       "REF",
                                                       "ROWID", // java 6
-                                                      "STRUCT");
+                                                      "STRUCT",
+                                                      "REF_CURSOR",
+                                                      "TIME_WITH_TIMEZONE",
+                                                      "TIMESTAMP_WITH_TIMEZONE");
         for (Field field : Types.class.getDeclaredFields()) {
             String typeName = field.getName();
             int type = field.getInt(null);
@@ -52,7 +55,11 @@ public class DataHandlerTest extends TestCase {
                     // expected
                 }
             } else {
-                assertNotNull(typeName + " should return None", _handler.getPyObject(rs, 1, type));
+                try {
+                    assertNotNull(typeName + " should return None", _handler.getPyObject(rs, 1, type));
+                } catch (SQLException e) {
+                    assertEquals("unsupported type", String.valueOf(type), typeName);
+                }
             }
         }
     }
