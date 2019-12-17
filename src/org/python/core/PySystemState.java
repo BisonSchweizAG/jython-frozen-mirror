@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Pattern;
 
 import org.jruby.ext.posix.util.Platform;
 import org.python.Version;
@@ -45,10 +46,12 @@ public class PySystemState extends PyObject implements ClassDictInit {
     public static final String PYTHON_CACHEDIR = "python.cachedir";
     public static final String PYTHON_CACHEDIR_SKIP = "python.cachedir.skip";
     public static final String PYTHON_CONSOLE_ENCODING = "python.console.encoding";
-    protected static final String CACHEDIR_DEFAULT_NAME = "cachedir";
 
     public static final String JYTHON_JAR = "jython.jar";
     public static final String JYTHON_DEV_JAR = "jython-dev.jar";
+    
+    protected static final Pattern STANDALONE_PATTERN = Pattern.compile("/jython.*\\.jar!?/Lib/os.py$"); 
+    protected static final String CACHEDIR_DEFAULT_NAME = "cachedir";
 
     public static final PyString version = new PyString(Version.getVersion());
     public static final int hexversion = ((Version.PY_MAJOR_VERSION << 24) |
@@ -1083,12 +1086,8 @@ public class PySystemState extends PyObject implements ClassDictInit {
         boolean standalone = false;
         URL url = PySystemState.class.getResource("/Lib/os.py");
         if (url != null) {
-            String path = url.getPath();
-            if (path.contains(JYTHON_JAR)) {
-                standalone = true;
-            } else if (path.endsWith(".jar!/Lib/os.py")) {
-                standalone = true;
-            }
+            String urlpath = url.getPath();
+            standalone = STANDALONE_PATTERN.matcher(urlpath).find();
         }
         return standalone;
     }
