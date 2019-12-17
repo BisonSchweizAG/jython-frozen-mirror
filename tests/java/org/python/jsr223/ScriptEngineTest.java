@@ -227,7 +227,7 @@ public class ScriptEngineTest extends TestCase {
         pythonEngine.eval("a = 4");
         pythonEngine.eval("b = 'hi'");
         pythonEngine.eval("localrepr = `locals()`");
-        assertEquals("{'b': u'hi', 'a': 4}", pythonEngine.get("localrepr"));
+        assertEquals("{'a': 4, 'b': u'hi'}", pythonEngine.get("localrepr"));
     }
     
     public void testScope_iter() throws ScriptException {
