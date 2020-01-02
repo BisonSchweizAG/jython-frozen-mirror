@@ -58,7 +58,13 @@
   * Version: the actual version (from ant.properties)
   * leave Classifier empty 
   * Type: `jar`
-
+* deploy the `.pom` file with the correct name/version
+  * prepare it in `jython/bison` first
+  * Group ID: `org.python`
+  * Artifact ID: `jython`
+  * Version: the actual version (from ant.properties)
+  * leave Classifier empty 
+  * Type: `pom`
 
 ## (very) short summary of the changes to 2.5.3
 * see also: `git diff r2.5.3`
