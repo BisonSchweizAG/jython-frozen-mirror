@@ -33,8 +33,8 @@
 
 ## Build a deployable version 
 * check/update the `jython.version`(s) in `ant.properties`
-* if necessary, add a new tag like `git tag -a v2.5.3.4 -m "Jython version 2.5.3.4"`
-* if necessary, push the new tag like `git push origin v2.5.3.4`
+* if necessary, add a new tag like `git tag -a v2.5.3.5 -m "Jython version 2.5.3.5"`
+* if necessary, push the new tag like `git push origin v2.5.3.5`
 * run the `build artifactory` launch configuration
 * deploy `/dist/artifactory/jython*-sources.jar` to `/ext-libs-local-modified/org/python/jython`
   * check the Deploy as Maven Artifact checkbox

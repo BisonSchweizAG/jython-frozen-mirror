@@ -8,7 +8,7 @@
     <artifactId>jython</artifactId>
     <packaging>jar</packaging>
     <name>Jython</name>
-    <version>2.5.3.4</version>
+    <version>2.5.3.5</version>
     <url>http://www.jython.org/</url>
     <description>
         Jython is an implementation of the high-level, dynamic, object-oriented
