@@ -1,6 +1,6 @@
 ## How to get a green Eclipse workspace
 
-- `git clone git@github.com:BisonSchweizAG/jython.git`
+- `git clone git@github.com:BisonSchweizAG/jython-frozen-mirror.git`
 - `git checkout r2.5.3.bison`
 - use a current eclipse installation without the Bison tools plugin: open an empty workspace
 - add and set the default JDK to 1.7 (not higher)
