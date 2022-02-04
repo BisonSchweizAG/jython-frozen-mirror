@@ -3,11 +3,12 @@
 - `git clone git@github.com:BisonSchweizAG/jython-frozen-mirror.git`
 - `git checkout r2.5.3.bison`
 - use a current eclipse installation without the Bison tools plugin: open an empty workspace
-- add and set the default JDK to 1.7 (not higher)
-- set the compiler compliance level to 1.6
+- add and set the default JDK to 1.8
+- set the compiler compliance level to 1.8
 - add the clone to the git perspective and import the project
 - go to Window -> Preferences -> Java -> Code Style -> Formatter, and import `/bison/formatting/Jython-like.xml`
 - set the `jdk7.command` property in `ant.properties`, e.g: `/usr/lib/jvm/jdk1.7.0_79/bin/java`
+- make sure that the classpath of the `/bison/launch.configs/build developer.launch` and `/bison/launch.configs/setup.launch` launch configurations contains `/extlibs/ant.jar`
 - run the `setup` launch configuration (in `/bison/launch.configs/`) <br/>(run again in case of an initial build failure)
 
 
