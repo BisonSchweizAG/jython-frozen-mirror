@@ -1,7 +1,7 @@
 <project name="setup" default="main" basedir=".">
 
 	<target name="main"
-		description="necessary setup for a working eclipse 2019-09 workspace">
+		description="necessary setup for a working eclipse 2021-12 workspace">
 
 		<property name="rootdir" value="${basedir}/../.." />
 
