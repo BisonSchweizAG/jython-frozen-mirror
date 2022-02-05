@@ -16,7 +16,7 @@
 
 - run the `build developer` launch configuration <br/>(the first run just after `clean` might fail - run again in this case)
 - run the `javatests` launch configuration
-- run the `regrtests` launch confguration <br/>(on Mac: eagerly picks JDK 9 if installed and stops in `test_urllib2_localnet.py` with: "cannot access class sun.nio.ch.ServerSocketAdaptor (in module java.base) because module java.base does not export sun.nio.ch to unnamed module @b1712f3")
+- run the `regrtests` launch configuration <br/>(on Mac: eagerly picks the latest installed JDK -> tweak `dist/bin/jython` to use jdk 11 and `--illegal-access=warn`, around line 263)
 - on Ubuntu, the result of the 'regrtests' is as follows:
 ```
      [exec] 323 tests OK.
