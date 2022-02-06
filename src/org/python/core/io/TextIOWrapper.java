@@ -29,7 +29,7 @@ public class TextIOWrapper extends BinaryIOWrapper {
     /**
      * Contruct a TextIOWrapper wrapping the given BufferedIOBase.
      *
-     * @param bufferedIO {@inheritDoc}
+     * @param bufferedIO
      */
     public TextIOWrapper(BufferedIOBase bufferedIO) {
         super(bufferedIO);

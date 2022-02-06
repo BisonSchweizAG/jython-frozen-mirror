@@ -14,7 +14,7 @@ public class LineBufferedWriter extends BufferedWriter {
     /**
      * Construct a LineBufferedWriter wrapping the given RawIOBase.
      *
-     * @param rawIO {@inheritDoc}
+     * @param rawIO
      */
     public LineBufferedWriter(RawIOBase rawIO) {
         super(rawIO, 0);

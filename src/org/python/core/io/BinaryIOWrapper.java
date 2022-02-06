@@ -16,7 +16,7 @@ public class BinaryIOWrapper extends TextIOBase {
      * Contruct a TextIOBase in binary mode, wrapping the given
      * BufferedIOBase.
      *
-     * @param bufferedIO {@inheritDoc}
+     * @param bufferedIO
      */
     public BinaryIOWrapper(BufferedIOBase bufferedIO) {
         super(bufferedIO);

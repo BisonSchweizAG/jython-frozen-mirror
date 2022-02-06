@@ -13,7 +13,7 @@ public class LineBufferedRandom extends BufferedRandom {
     /**
      * Construct a LineBufferedRandom wrapping the given RawIOBase.
      *
-     * @param rawIO {@inheritDoc}
+     * @param rawIO
      */
     public LineBufferedRandom(RawIOBase rawIO) {
         super(rawIO, 1);

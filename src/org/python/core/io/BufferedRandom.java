@@ -20,8 +20,8 @@ public class BufferedRandom extends BufferedIOMixin {
      * Construct a BufferedRandom of bufferSize, wrapping the given
      * RawIOBase.
      *
-     * @param rawIO {@inheritDoc}
-     * @param bufferSize {@inheritDoc}
+     * @param rawIO
+     * @param bufferSize
      */
     public BufferedRandom(RawIOBase rawIO, int bufferSize) {
         super(rawIO, bufferSize);

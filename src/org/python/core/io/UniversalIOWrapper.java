@@ -27,7 +27,7 @@ public class UniversalIOWrapper extends TextIOBase {
      * Contruct a UniversalIOWrapper wrapping the given
      * BufferedIOBase.
      *
-     * @param bufferedIO {@inheritDoc}
+     * @param bufferedIO
      */
     public UniversalIOWrapper(BufferedIOBase bufferedIO) {
         super(bufferedIO);
