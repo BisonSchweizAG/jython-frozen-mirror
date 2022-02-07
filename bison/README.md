@@ -3,8 +3,9 @@
 - `git clone git@github.com:BisonSchweizAG/jython-frozen-mirror.git`
 - `git checkout r2.5.3.bison`
 - use a current eclipse installation without the Bison tools plugin: open an empty workspace
-- add and set the default JDK to 1.8
-- set the compiler compliance level to 1.8
+- add and set the default JDK to 1.7
+- set the compiler compliance level to 1.7
+- it is OK if the ant launch configurations are executed with 1.8 (Eclipse requires >= 1.8); tests are run with jdk 11
 - add the clone to the git perspective and import the project
 - go to Window -> Preferences -> Java -> Code Style -> Formatter, and import `/bison/formatting/Jython-like.xml`
 - set the `jdk7.command` property in `ant.properties`, e.g: `/usr/lib/jvm/jdk1.7.0_79/bin/java`
@@ -15,7 +16,7 @@
 ## Build and test as a developer
 
 - run the `build developer` launch configuration <br/>(the first run just after `clean` might fail - run again in this case)
-- run the `javatests` launch configuration
+- run the `javatests` launch configuration (make sure to run it with jdk 11)
 - run the `regrtests` launch configuration <br/>(on Mac: eagerly picks the latest installed JDK -> tweak `dist/bin/jython` to use jdk 11 and `--illegal-access=warn`, around line 263)
 - on Ubuntu, the result of the 'regrtests' is as follows:
 ```
@@ -37,6 +38,7 @@
 * if necessary, add a new tag like `git tag -a v2.5.3.5 -m "Jython version 2.5.3.5"`
 * if necessary, push the new tag like `git push origin v2.5.3.5`
 * run the `build artifactory` launch configuration
+  * use ant 1.9.16 and jdk 7 to run this target from the command line (jarjar-0.7 does not work with jdk >= 8)
 * deploy `/dist/artifactory/jython*-sources.jar` to `/ext-libs-local-modified/org/python/jython`
   * check the Deploy as Maven Artifact checkbox
   * Group ID: `org.python`
