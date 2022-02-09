@@ -16,6 +16,7 @@
 - run the `clean` launch configuration
 - run the `build developer` launch configuration (the first run just after `clean` might fail - run again in this case)
 - run the `javatests` launch configuration (make sure to run it with jdk 11)
+- run the `bugtests` launch configuration (make sure to run with jdk 11)
 - run the `regrtests` launch configuration <br/>(on Mac: eagerly picks the latest installed JDK -> tweak `dist/bin/jython` to use jdk 11 and `--illegal-access=warn`, around line 263)
 - on Ubuntu, the result of the 'regrtests' is as follows:
 ```
