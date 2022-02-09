@@ -96,21 +96,21 @@ def runJava(cls, **kw):
   else:
     defs = ''
   if UNIX:
-    cmd = ['/bin/sh', '-c', "%s/bin/java -classpath %s %s %s" % (cfg.java_home, classpath, defs, cls)]
+    cmd = ['/bin/sh', '-c', "%s/bin/java --illegal-access=warn -classpath %s %s %s" % (cfg.java_home, classpath, defs, cls)]
   elif WIN:
-    cmd = 'cmd /C "%s/bin/java.exe -classpath %s %s %s"' % (cfg.java_home, classpath, defs, cls)
+    cmd = 'cmd /C "%s/bin/java.exe --illegal-access=warn -classpath %s %s %s"' % (cfg.java_home, classpath, defs, cls)
   return execCmd(cmd, kw)
 
 def runJavaJar(jar, *args, **kw):
   argString = " ".join(args)
   if UNIX:
-    cmd = ['/bin/sh', '-c', "%s/bin/java -jar %s %s" % (cfg.java_home, jar, argString)]
+    cmd = ['/bin/sh', '-c', "%s/bin/java --illegal-access=warn -jar %s %s" % (cfg.java_home, jar, argString)]
   elif WIN:
-    cmd = 'cmd /C "%s/bin/java.exe -jar %s %s"' % (cfg.java_home, jar, argString)
+    cmd = 'cmd /C "%s/bin/java.exe --illegal-access=warn -jar %s %s"' % (cfg.java_home, jar, argString)
   return execCmd(cmd, kw)
 
 def runJython(cls, **kw):
-  javaargs = ''
+  javaargs = '--illegal-access=warn'
   if 'javaargs' in kw:
       javaargs = kw['javaargs']
   classpath = cfg.classpath
