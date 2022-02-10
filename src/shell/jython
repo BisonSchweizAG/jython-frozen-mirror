@@ -224,7 +224,7 @@ python_args=("${python_args[@]}" "$@")
 # Put the python_args back into the position arguments $1, $2 etc
 set -- "${python_args[@]}"
 
-JAVA_OPTS="$JAVA_OPTS $JAVA_MEM $JAVA_STACK"
+JAVA_OPTS="$JAVA_OPTS $JAVA_MEM $JAVA_STACK --illegal-access=warn"
 
 if $cygwin; then
   JAVA_HOME=`cygpath --mixed "$JAVA_HOME"`
