@@ -2,6 +2,7 @@ package org.python.core.util;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,18 @@ public final class AccessibleSupport {
         List<Constructor<?>> accessibleConstructorsList = getAccessibleConstructorsAsList(declaringClass);
         Constructor<?>[] accessibleConstructors = new Constructor<?>[accessibleConstructorsList.size()];
         return accessibleConstructorsList.toArray(accessibleConstructors);
+    }
+
+    /**
+     * Try to {@code setAccessible(true)} on a single method <b>regardless</b> of its modifier - but only if allowed.
+     * 
+     * @param method
+     *            The method to be made accessible
+     * @param declaringClass
+     *            The class for which the method is tried toe make accessible
+     */
+    public static void forceSetAccessibleOnSingleMethod(Method method, Class<?> declaringClass) {
+        setAccessible(method, declaringClass);
     }
 
     private static List<Constructor<?>> getAccessibleConstructorsAsList(Class<?> declaringClass) {
