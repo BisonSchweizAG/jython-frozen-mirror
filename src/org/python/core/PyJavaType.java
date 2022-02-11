@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
+import org.python.core.util.AccessibleSupport;
 import org.python.core.util.StringUtil;
 import org.python.util.Generic;
 
@@ -514,10 +515,7 @@ public class PyJavaType extends PyType {
             // returns just the public constructors
             constructors = forClass.getConstructors();
         } else {
-            constructors = forClass.getDeclaredConstructors();
-            for (Constructor<?> ctr : constructors) {
-                ctr.setAccessible(true);
-            }
+            constructors = AccessibleSupport.getAccessibleConstructors(forClass);
         }
         for (Constructor<?> ctr : constructors) {
             reflctr.addConstructor(ctr);
