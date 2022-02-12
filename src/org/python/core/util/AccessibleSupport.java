@@ -39,6 +39,33 @@ public final class AccessibleSupport {
     }
 
     /**
+     * Get all accessible methods on the declaring class and all its super classes.
+     * <p>
+     * If the modifier of the method is not public, try to {@code setAccessible(true)} - but only if allowed.
+     * 
+     * @param declaringClass
+     *            The class for which the methods are returned
+     * 
+     * @return All the accessible methods of the declaring class and its super classes
+     */
+    public static List<Method> getAccessibleMethodsInHierarchy(Class<?> declaringClass) {
+        List<Method> accessibleMethods = new ArrayList<>();
+        for (Class<?> currentClass = declaringClass; currentClass != null; currentClass = currentClass
+                        .getSuperclass()) {
+            for (Method method : currentClass.getDeclaredMethods()) {
+                if (Modifier.isPublic(method.getModifiers())) {
+                    accessibleMethods.add(method);
+                } else {
+                    if (setAccessible(method, currentClass)) {
+                        accessibleMethods.add(method);
+                    }
+                }
+            }
+        }
+        return accessibleMethods;
+    }
+
+    /**
      * Try to {@code setAccessible(true)} on a single method <b>regardless</b> of its modifier - but only if allowed.
      * 
      * @param method

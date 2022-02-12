@@ -2,10 +2,15 @@ package org.python.core.util;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RectangularShape;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -77,7 +82,6 @@ public class AccessibleSupportTest extends TestCase {
             AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
         }
     }
-    
 
     public void testForceSetAccessibleOnSingleMethod_ownPackagePrivateClass() throws Exception {
         PackagePrivate packagePrivateInstance = new PackagePrivate();
@@ -89,7 +93,95 @@ public class AccessibleSupportTest extends TestCase {
             assertTrue(result instanceof String);
             assertEquals(method.getName(), result);
         }
-    }    
-    
+    }
+
+    public void testGetAccessibleMethodsInHierarchy_EllipseIterator() throws ClassNotFoundException {
+        Class<?> declaringClass = Class.forName("java.awt.geom.EllipseIterator");
+        assertNotNull(declaringClass);
+        List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(declaringClass);
+        Set<String> methodNames = new HashSet<>();
+        for (Method method : accessibleMethods) {
+            methodNames.add(method.getName());
+        }
+        assertFalse(methodNames.isEmpty());
+        // EllipseIterator: getWindingRule, isDone
+        assertTrue(methodNames.contains("getWindingRule"));
+        assertTrue(methodNames.contains("isDone"));
+        // Object: equals, hashCode, toString
+        assertTrue(methodNames.contains("equals"));
+        assertTrue(methodNames.contains("hashCode"));
+        assertTrue(methodNames.contains("toString"));
+        // Object: clone, finalize
+        assertFalse(methodNames.contains("clone"));
+        assertFalse(methodNames.contains("finalize"));
+    }
+
+    public void testGetAccessibleMethodsInHierarchy_Class() throws ClassNotFoundException {
+        List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Class.class);
+        assertTrue(accessibleMethods.size() >= 75);
+        Set<String> methodNames = new HashSet<>();
+        for (Method method : accessibleMethods) {
+            methodNames.add(method.getName());
+        }
+        assertFalse(methodNames.isEmpty());
+        // getName, getPackage, getInterfaces
+        assertTrue(methodNames.contains("getName"));
+        assertTrue(methodNames.contains("getPackage"));
+        assertTrue(methodNames.contains("getInterfaces"));
+        // - checkMemberAccess, checkPackageAccess, resolveName
+        assertFalse(methodNames.contains("checkMemberAccess"));
+        assertFalse(methodNames.contains("checkPackageAccess"));
+        assertFalse(methodNames.contains("resolveName"));
+    }
+
+    public void testGetAccessibleMethodsInHierarchy_Enum() throws ClassNotFoundException {
+        List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Enum.class);
+        assertTrue(accessibleMethods.size() >= 15);
+        Set<String> methodNames = new HashSet<>();
+        for (Method method : accessibleMethods) {
+            methodNames.add(method.getName());
+        }
+        assertFalse(methodNames.isEmpty());
+        // Enum: equals, hashCode, toString, compareTo
+        assertTrue(methodNames.contains("equals"));
+        assertTrue(methodNames.contains("hashCode"));
+        assertTrue(methodNames.contains("toString"));
+        assertTrue(methodNames.contains("compareTo"));
+        // Enum: clone, finalize, readObject, readObjectNoData
+        assertFalse(methodNames.contains("clone"));
+        assertFalse(methodNames.contains("finalize"));
+        assertFalse(methodNames.contains("readObject"));
+        assertFalse(methodNames.contains("readObjectNoData"));
+    }
+
+    public void testGetAccessibleMethodsInHierarchy_Throwable() throws ClassNotFoundException {
+        List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Throwable.class);
+        assertTrue(accessibleMethods.size() >= 20);
+        Set<String> methodNames = new HashSet<>();
+        for (Method method : accessibleMethods) {
+            methodNames.add(method.getName());
+        }
+        assertFalse(methodNames.isEmpty());
+        assertTrue(methodNames.contains("fillInStackTrace"));
+        assertTrue(methodNames.contains("getMessage"));
+        assertTrue(methodNames.contains("printStackTrace"));
+    }
+
+    public void testGetAccessibleMethodsInHierarchy_AnnotatedElement() throws ClassNotFoundException {
+        List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(AnnotatedElement.class);
+        assertTrue(accessibleMethods.size() >= 7);
+        Set<String> methodNames = new HashSet<>();
+        for (Method method : accessibleMethods) {
+            methodNames.add(method.getName());
+        }
+        assertFalse(methodNames.isEmpty());
+        assertTrue(methodNames.contains("isAnnotationPresent"));
+        assertTrue(methodNames.contains("getAnnotation"));
+        assertTrue(methodNames.contains("getAnnotations"));
+        assertTrue(methodNames.contains("getAnnotationsByType"));
+        assertTrue(methodNames.contains("getDeclaredAnnotation"));
+        assertTrue(methodNames.contains("getDeclaredAnnotations"));
+        assertTrue(methodNames.contains("getDeclaredAnnotationsByType"));
+    }
 
 }
