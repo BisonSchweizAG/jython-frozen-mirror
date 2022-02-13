@@ -5,6 +5,7 @@ import java.awt.geom.RectangularShape;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -182,6 +183,50 @@ public class AccessibleSupportTest extends TestCase {
         assertTrue(methodNames.contains("getDeclaredAnnotation"));
         assertTrue(methodNames.contains("getDeclaredAnnotations"));
         assertTrue(methodNames.contains("getDeclaredAnnotationsByType"));
+    }
+
+    public void testGetAccessibleFields_EllipseIterator() throws ClassNotFoundException {
+        // the class itself is not visible, make sure that no setAccessible(true) happens to the fields
+        Class<?> declaringClass = Class.forName("java.awt.geom.EllipseIterator");
+        assertNotNull(declaringClass);
+        Field[] fields = AccessibleSupport.getAccessibleFields(declaringClass);
+        assertEquals(1, fields.length);
+        assertEquals("CtrlVal", fields[0].getName());
+    }
+
+    public void testGetAccessibleFields_Class() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(Class.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_Enum() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(Enum.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_Error() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(Error.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_OutOfMemoryError() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(OutOfMemoryError.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_Throwable() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(Throwable.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_VirtualMachineError() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(VirtualMachineError.class);
+        assertEquals(0, fields.length);
+    }
+
+    public void testGetAccessibleFields_PackagePrivate() {
+        Field[] fields = AccessibleSupport.getAccessibleFields(PackagePrivate.class);
+        assertEquals(4, fields.length);
     }
 
 }

@@ -8,6 +8,11 @@ package org.python.core.util;
  */
 class PackagePrivate {
 
+    public String publicMember;
+    String packagePrivateMember;
+    protected String protectedMember;
+    private String privateMember;
+    
     public String callMePublic() {
         return "callMePublic";
     }

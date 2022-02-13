@@ -400,10 +400,7 @@ public class PyJavaType extends PyType {
             // returns just the public fields
             fields = forClass.getFields();
         } else {
-            fields = forClass.getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-            }
+            fields = AccessibleSupport.getAccessibleFields(forClass);
         }
         for (Field field : fields) {
             if (!declaredOnMember(baseClass, field)) {

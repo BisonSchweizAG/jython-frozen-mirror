@@ -2,6 +2,7 @@ package org.python.core.util;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -36,6 +37,22 @@ public final class AccessibleSupport {
         List<Constructor<?>> accessibleConstructorsList = getAccessibleConstructorsAsList(declaringClass);
         Constructor<?>[] accessibleConstructors = new Constructor<?>[accessibleConstructorsList.size()];
         return accessibleConstructorsList.toArray(accessibleConstructors);
+    }
+
+    /**
+     * Get all accessible fields of the declaring class.
+     * <p>
+     * If the modifier of the field is not public, try to {@code setAccessible(true)} - but only if allowed.
+     * 
+     * @param declaringClass
+     *            The class for which the fields are returned
+     * 
+     * @return All the accessible fields of the declaring class
+     */
+    public static Field[] getAccessibleFields(Class<?> declaringClass) {
+        List<Field> accessibleFieldsList = getAccessibleFieldsAsList(declaringClass);
+        Field[] accessibleFields = new Field[accessibleFieldsList.size()];
+        return accessibleFieldsList.toArray(accessibleFields);
     }
 
     /**
@@ -90,6 +107,21 @@ public final class AccessibleSupport {
             }
         }
         return constructors;
+    }
+
+    private static List<Field> getAccessibleFieldsAsList(Class<?> declaringClass) {
+        List<Field> fields = new ArrayList<>();
+        Field[] fieldCandidates = declaringClass.getDeclaredFields();
+        for (Field field : fieldCandidates) {
+            if (Modifier.isPublic(field.getModifiers())) {
+                fields.add(field);
+            } else {
+                if (setAccessible(field, declaringClass)) {
+                    fields.add(field);
+                }
+            }
+        }
+        return fields;
     }
 
     private static boolean setAccessible(AccessibleObject accessibleObject, Class<?> declaringClass) {
