@@ -2,11 +2,9 @@ package org.python.core.util;
 
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RectangularShape;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
@@ -100,7 +98,7 @@ public class AccessibleSupportTest extends TestCase {
         Class<?> declaringClass = Class.forName("java.awt.geom.EllipseIterator");
         assertNotNull(declaringClass);
         List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(declaringClass);
-        Set<String> methodNames = new HashSet<>();
+        Set<String> methodNames = new HashSet<String>();
         for (Method method : accessibleMethods) {
             methodNames.add(method.getName());
         }
@@ -120,7 +118,7 @@ public class AccessibleSupportTest extends TestCase {
     public void testGetAccessibleMethodsInHierarchy_Class() throws ClassNotFoundException {
         List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Class.class);
         assertTrue(accessibleMethods.size() >= 75);
-        Set<String> methodNames = new HashSet<>();
+        Set<String> methodNames = new HashSet<String>();
         for (Method method : accessibleMethods) {
             methodNames.add(method.getName());
         }
@@ -138,7 +136,7 @@ public class AccessibleSupportTest extends TestCase {
     public void testGetAccessibleMethodsInHierarchy_Enum() throws ClassNotFoundException {
         List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Enum.class);
         assertTrue(accessibleMethods.size() >= 15);
-        Set<String> methodNames = new HashSet<>();
+        Set<String> methodNames = new HashSet<String>();
         for (Method method : accessibleMethods) {
             methodNames.add(method.getName());
         }
@@ -158,7 +156,7 @@ public class AccessibleSupportTest extends TestCase {
     public void testGetAccessibleMethodsInHierarchy_Throwable() throws ClassNotFoundException {
         List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(Throwable.class);
         assertTrue(accessibleMethods.size() >= 20);
-        Set<String> methodNames = new HashSet<>();
+        Set<String> methodNames = new HashSet<String>();
         for (Method method : accessibleMethods) {
             methodNames.add(method.getName());
         }
@@ -171,7 +169,7 @@ public class AccessibleSupportTest extends TestCase {
     public void testGetAccessibleMethodsInHierarchy_AnnotatedElement() throws ClassNotFoundException {
         List<Method> accessibleMethods = AccessibleSupport.getAccessibleMethodsInHierarchy(AnnotatedElement.class);
         assertTrue(accessibleMethods.size() >= 7);
-        Set<String> methodNames = new HashSet<>();
+        Set<String> methodNames = new HashSet<String>();
         for (Method method : accessibleMethods) {
             methodNames.add(method.getName());
         }

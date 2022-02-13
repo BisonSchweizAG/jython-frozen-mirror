@@ -16,7 +16,7 @@ public final class AccessibleSupport {
     private static List<String> FORBIDDEN_PACKAGES;
 
     static {
-        FORBIDDEN_PACKAGES = new ArrayList<>();
+        FORBIDDEN_PACKAGES = new ArrayList<String>();
         FORBIDDEN_PACKAGES.add("java.awt.");
         FORBIDDEN_PACKAGES.add("java.io.");
         FORBIDDEN_PACKAGES.add("java.lang.");
@@ -66,7 +66,7 @@ public final class AccessibleSupport {
      * @return All the accessible methods of the declaring class and its super classes
      */
     public static List<Method> getAccessibleMethodsInHierarchy(Class<?> declaringClass) {
-        List<Method> accessibleMethods = new ArrayList<>();
+        List<Method> accessibleMethods = new ArrayList<Method>();
         for (Class<?> currentClass = declaringClass; currentClass != null; currentClass = currentClass
                         .getSuperclass()) {
             for (Method method : currentClass.getDeclaredMethods()) {
@@ -95,7 +95,7 @@ public final class AccessibleSupport {
     }
 
     private static List<Constructor<?>> getAccessibleConstructorsAsList(Class<?> declaringClass) {
-        List<Constructor<?>> constructors = new ArrayList<>();
+        List<Constructor<?>> constructors = new ArrayList<Constructor<?>>();
         Constructor<?>[] constructorCandidates = declaringClass.getDeclaredConstructors();
         for (Constructor<?> constructor : constructorCandidates) {
             if (Modifier.isPublic(constructor.getModifiers())) {
@@ -110,7 +110,7 @@ public final class AccessibleSupport {
     }
 
     private static List<Field> getAccessibleFieldsAsList(Class<?> declaringClass) {
-        List<Field> fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<Field>();
         Field[] fieldCandidates = declaringClass.getDeclaredFields();
         for (Field field : fieldCandidates) {
             if (Modifier.isPublic(field.getModifiers())) {
