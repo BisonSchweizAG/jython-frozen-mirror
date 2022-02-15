@@ -1,2 +1,2 @@
-from java.awt.geom import Ellipse2D, EllipseIterator
-EllipseIterator(Ellipse2D.Float(), None)
+from org.python.core.util import ProtectedClass
+ProtectedClass('input')
