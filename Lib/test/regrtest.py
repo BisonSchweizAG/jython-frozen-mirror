@@ -1384,6 +1384,7 @@ _expectations = {
         test_aepack
         test_al
         test_applesingle
+        test_asynchat
         test_audioop
         test_bsddb
         test_bsddb185
@@ -1413,6 +1414,7 @@ _expectations = {
         test_linuxaudiodev
         test_locale
         test_longexp
+        test_logging
         test_macfs
         test_macostools
         test_mmap
@@ -1427,6 +1429,9 @@ _expectations = {
         test_resource
         test_rgbimg
         test_scriptpackages
+        test_select
+        test_signal
+        test_socket
         test_socket_ssl
         test_socketserver
         test_sqlite
@@ -1437,8 +1442,10 @@ _expectations = {
         test_sundry
         test_symtable
         test_tcl
+        test_threading_jy
         test_timeout
         test_unicode_file
+        test_urllib2_localnet
         test_wait3
         test_wait4
         test_wave
