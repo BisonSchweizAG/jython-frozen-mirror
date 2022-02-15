@@ -170,10 +170,6 @@ class ImpTestCase(unittest.TestCase):
         # causes a stack overflow if the bug occurs
         self.assertRaises(Exception, getattr, anygui, 'abc')
 
-    def test_import_star(self):
-        self.assertEquals(subprocess.call([sys.executable,
-        test_support.findfile("import_star_from_java.py")]), 0)
-
     def test_selfreferential_classes(self):
         from org.python.tests.inbred import Metis
         from org.python.tests.inbred import Zeus
