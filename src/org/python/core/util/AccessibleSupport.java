@@ -3,6 +3,7 @@ package org.python.core.util;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ import java.util.List;
  */
 public final class AccessibleSupport {
 
+    /**
+     * The forbidden packages for setAccessible(true)
+     */
     private static List<String> FORBIDDEN_PACKAGES;
 
     static {
@@ -21,6 +25,16 @@ public final class AccessibleSupport {
         FORBIDDEN_PACKAGES.add("java.io.");
         FORBIDDEN_PACKAGES.add("java.lang.");
         FORBIDDEN_PACKAGES.add("sun.");
+    }
+
+    /**
+     * The forbidden packages for reflective method calls
+     */
+    private static List<String> FORBIDDEN_PACKAGES_FOR_CALLS;
+
+    static {
+        FORBIDDEN_PACKAGES_FOR_CALLS = new ArrayList<String>();
+        FORBIDDEN_PACKAGES_FOR_CALLS.add("sun.nio.");
     }
 
     /**
@@ -87,11 +101,38 @@ public final class AccessibleSupport {
      * 
      * @param method
      *            The method to be made accessible
-     * @param declaringClass
-     *            The class for which the method is tried toe make accessible
      */
-    public static void forceSetAccessibleOnSingleMethod(Method method, Class<?> declaringClass) {
-        setAccessible(method, declaringClass);
+    public static void forceSetAccessibleOnSingleMethod(Method method) {
+        setAccessible(method, method.getDeclaringClass());
+    }
+
+    /**
+     * Invoke a method, if allowed.
+     * <p>
+     * Throws a {@code Py.JavaError} if the invocation failed.
+     * 
+     * @param method
+     *            The method to be invoked
+     * @param cself
+     *            The object to invoke the method on
+     * @param argsArray
+     *            The parameters to the method
+     * 
+     * @return The result of the call
+     * 
+     * @throws IllegalAccessException  If the call to the method is blocked
+     * @throws InvocationTargetException If the call does not succeed
+     * @throws IllegalArgumentException If there are wrong arguments to the methd
+     */
+    public static Object invokeMethod(Method method, Object cself, Object[] argsArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        Class<?> declaringClass = method.getDeclaringClass();
+        if (blocksCallsToForbiddenPackage(declaringClass)) {
+            String message = String.format("Call to method '%s' of class '%s' would lead to an illegal access.",
+                            method.getName(), declaringClass.getName());
+            throw new IllegalAccessException(message);
+        } else {
+            return method.invoke(cself, argsArray);
+        }
     }
 
     private static List<Constructor<?>> getAccessibleConstructorsAsList(Class<?> declaringClass) {
@@ -137,15 +178,23 @@ public final class AccessibleSupport {
     }
 
     private static boolean belongsToForbiddenPackage(Class<?> declaringClass) {
-        boolean forbidden = false;
         String fullClassName = declaringClass.getName();
         for (String forbiddenPackage : FORBIDDEN_PACKAGES) {
             if (fullClassName.startsWith(forbiddenPackage)) {
-                forbidden = true;
-                break;
+                return true;
             }
         }
-        return forbidden;
+        return false;
+    }
+
+    private static boolean blocksCallsToForbiddenPackage(Class<?> declaringClass) {
+        String fullClassName = declaringClass.getName();
+        for (String forbiddenPackageForCalls : FORBIDDEN_PACKAGES_FOR_CALLS) {
+            if (fullClassName.startsWith(forbiddenPackageForCalls)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

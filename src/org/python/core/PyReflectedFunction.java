@@ -98,8 +98,7 @@ public class PyReflectedFunction extends PyObject {
         if (!Modifier.isPublic(m.getModifiers()) && Options.respectJavaAccessibility) {
             return;
         }
-        Class<?> declaringClass = m.getDeclaringClass();
-        if (isPackagedProtected(declaringClass)) {
+        if (isPackagedProtected(m.getDeclaringClass())) {
             /*
             * Set public methods on package protected classes accessible so that reflected calls to
             * the method in subclasses of the package protected class will succeed. Yes, it's
@@ -111,7 +110,7 @@ public class PyReflectedFunction extends PyObject {
             * it'll be fixed in Dolphin but it's been promised in every version since Tiger
             * so don't hold your breath.
             */
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(m, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(m);
             // Catching a SecurityException is pretty far in the corner, so don't scream if we can't set the method
             // accessible due to a security manager.  Any calls to it will fail with an
             // IllegalAccessException, so it'll become visible there.  This way we don't spam
@@ -182,7 +181,7 @@ public class PyReflectedFunction extends PyObject {
         }
         Object o;
         try {
-            o = m.invoke(cself, callData.getArgsArray());
+            o =  AccessibleSupport.invokeMethod(m, cself, callData.getArgsArray());
         } catch (Throwable t) {
             throw Py.JavaError(t);
         }

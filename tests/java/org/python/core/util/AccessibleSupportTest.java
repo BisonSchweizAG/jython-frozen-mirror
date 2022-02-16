@@ -5,8 +5,10 @@ import java.awt.geom.RectangularShape;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +51,7 @@ public class AccessibleSupportTest extends TestCase {
         assertNotNull(declaringClass);
         Method[] methods = declaringClass.getDeclaredMethods();
         for (Method method : methods) {
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(method);
         }
     }
 
@@ -59,7 +61,7 @@ public class AccessibleSupportTest extends TestCase {
         assertNotNull(declaringClass);
         Method[] methods = declaringClass.getDeclaredMethods();
         for (Method method : methods) {
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(method);
         }
     }
 
@@ -69,7 +71,7 @@ public class AccessibleSupportTest extends TestCase {
         assertNotNull(declaringClass);
         Method[] methods = declaringClass.getDeclaredMethods();
         for (Method method : methods) {
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(method);
         }
     }
 
@@ -78,7 +80,7 @@ public class AccessibleSupportTest extends TestCase {
         Class<?> declaringClass = Class.forName("sun.nio.ch.SelectionKeyImpl");
         Method[] methods = declaringClass.getDeclaredMethods();
         for (Method method : methods) {
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(method);
         }
     }
 
@@ -87,7 +89,7 @@ public class AccessibleSupportTest extends TestCase {
         Class<PackagePrivate> declaringClass = PackagePrivate.class;
         Method[] methods = declaringClass.getDeclaredMethods();
         for (Method method : methods) {
-            AccessibleSupport.forceSetAccessibleOnSingleMethod(method, declaringClass);
+            AccessibleSupport.forceSetAccessibleOnSingleMethod(method);
             Object result = method.invoke(packagePrivateInstance);
             assertTrue(result instanceof String);
             assertEquals(method.getName(), result);
@@ -225,6 +227,27 @@ public class AccessibleSupportTest extends TestCase {
     public void testGetAccessibleFields_PackagePrivate() {
         Field[] fields = AccessibleSupport.getAccessibleFields(PackagePrivate.class);
         assertEquals(4, fields.length);
+    }
+
+    public void testInvokeMethod_blocked() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+                    IllegalArgumentException, InvocationTargetException {
+        Class<?> declaringClass = Class.forName("sun.nio.ch.FileChannelImpl");
+        assertNotNull(declaringClass);
+        Method method = declaringClass.getDeclaredMethod("getMappedBufferPool");
+        assertNotNull(method);
+        try {
+            AccessibleSupport.invokeMethod(method, declaringClass, new Object[0]);
+            fail("IllegalAccessException expected");
+        } catch (IllegalAccessException re) {
+            assertTrue(re.getMessage().contains("would lead to an illegal access"));
+        }
+    }
+
+    public void testInvokeMethod_allowed() throws NoSuchMethodException, SecurityException, IllegalAccessException,
+                    IllegalArgumentException, InvocationTargetException {
+        Method method = Class.class.getDeclaredMethod("getName");
+        assertNotNull(method);
+        assertEquals("java.math.BigDecimal", AccessibleSupport.invokeMethod(method, BigDecimal.class, new Object[0]));
     }
 
 }
