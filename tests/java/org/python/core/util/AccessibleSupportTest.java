@@ -243,11 +243,37 @@ public class AccessibleSupportTest extends TestCase {
         }
     }
 
-    public void testInvokeMethod_allowed() throws NoSuchMethodException, SecurityException, IllegalAccessException,
+    public void testInvokeMethod_illegalButExplicitlyAllowed() throws ClassNotFoundException, NoSuchMethodException,
+                    SecurityException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
+        Class<?> declaringClass = Class.forName("sun.nio.ch.FileChannelImpl");
+        assertNotNull(declaringClass);
+        Method method = declaringClass.getDeclaredMethod("getMappedBufferPool");
+        assertNotNull(method);
+        try {
+            setAllowAnyMethodCalls(true);
+            Object result = AccessibleSupport.invokeMethod(method, declaringClass, new Object[0]);
+            assertNotNull(result);
+        } finally {
+            setAllowAnyMethodCalls(false); // back to the default
+        }
+    }
+
+    public void testInvokeMethod_normal() throws NoSuchMethodException, SecurityException, IllegalAccessException,
                     IllegalArgumentException, InvocationTargetException {
         Method method = Class.class.getDeclaredMethod("getName");
         assertNotNull(method);
         assertEquals("java.math.BigDecimal", AccessibleSupport.invokeMethod(method, BigDecimal.class, new Object[0]));
+    }
+
+    private void setAllowAnyMethodCalls(boolean allowAnyMethodCalls) {
+        try {
+            Field field = AccessibleSupport.class.getDeclaredField("ALLOW_ANY_METHOD_CALLS");
+            assertNotNull(field);
+            field.setAccessible(true);
+            field.setBoolean(null, allowAnyMethodCalls);
+        } catch (Exception e) {
+            fail("error setting private field: " + e.getMessage());
+        }
     }
 
 }

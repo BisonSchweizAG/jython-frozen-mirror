@@ -15,6 +15,20 @@ import java.util.List;
 public final class AccessibleSupport {
 
     /**
+     * Setting this system property to {@code true} prevents blocking of illegal method calls.
+     * <p>
+     * The default is {@code false}.
+     * <p>
+     * This might be useful if the internal jdk modules are opened with {@code --add-opens}, and scripts like
+     * {@code socket.py} or {@code select.py} operate on {@code sun.nio.*} classes directly.
+     */
+    public static final String ALLOW_ILLEGAL_METHOD_CALLS = "python.allow.illegal.method.calls";
+
+    // Non-final to enable testing
+    private static boolean ALLOW_ANY_METHOD_CALLS = Boolean
+                    .valueOf(System.getProperty(ALLOW_ILLEGAL_METHOD_CALLS, "false"));
+
+    /**
      * The forbidden packages for setAccessible(true)
      */
     private static List<String> FORBIDDEN_PACKAGES;
@@ -120,11 +134,15 @@ public final class AccessibleSupport {
      * 
      * @return The result of the call
      * 
-     * @throws IllegalAccessException  If the call to the method is blocked
-     * @throws InvocationTargetException If the call does not succeed
-     * @throws IllegalArgumentException If there are wrong arguments to the methd
+     * @throws IllegalAccessException
+     *             If the call to the method is blocked
+     * @throws InvocationTargetException
+     *             If the call does not succeed
+     * @throws IllegalArgumentException
+     *             If there are wrong arguments to the method
      */
-    public static Object invokeMethod(Method method, Object cself, Object[] argsArray) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static Object invokeMethod(Method method, Object cself, Object[] argsArray)
+                    throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Class<?> declaringClass = method.getDeclaringClass();
         if (blocksCallsToForbiddenPackage(declaringClass)) {
             String message = String.format("Call to method '%s' of class '%s' would lead to an illegal access.",
@@ -188,10 +206,12 @@ public final class AccessibleSupport {
     }
 
     private static boolean blocksCallsToForbiddenPackage(Class<?> declaringClass) {
-        String fullClassName = declaringClass.getName();
-        for (String forbiddenPackageForCalls : FORBIDDEN_PACKAGES_FOR_CALLS) {
-            if (fullClassName.startsWith(forbiddenPackageForCalls)) {
-                return true;
+        if (!ALLOW_ANY_METHOD_CALLS) {
+            String fullClassName = declaringClass.getName();
+            for (String forbiddenPackageForCalls : FORBIDDEN_PACKAGES_FOR_CALLS) {
+                if (fullClassName.startsWith(forbiddenPackageForCalls)) {
+                    return true;
+                }
             }
         }
         return false;
