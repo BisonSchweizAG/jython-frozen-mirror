@@ -667,20 +667,6 @@ The readme text for the next release will be like:
             <!--
             <rule pattern="jline.**" result="org.python.jline.@1"/>
             -->
-            <manifest>
-                <attribute name="Main-Class" value="org.python.util.jython" />
-                <attribute name="Built-By" value="${user.name}" />
-                <!-- info section. ATTN: no blanks, no '.' in the names -->
-                <section name="Build-Info">
-                    <attribute name="version" value="${jython.version}" />
-                    <attribute name="svn-build" value="${do.checkout}" />
-                    <attribute name="oracle" value="${oracle.present}" />
-                    <attribute name="informix" value="${informix.present}" />
-                    <attribute name="build-compiler" value="${build.compiler}" />
-                    <attribute name="jdk-target-version" value="${jdk.target.version}" />
-                    <attribute name="debug" value="${debug}" />
-                </section>
-            </manifest>
         </jarjar>
     </target>
 
@@ -690,20 +676,6 @@ The readme text for the next release will be like:
             <zipfileset src="${dist.dir}/${jython.deploy.jar}"/>
             <fileset dir="${dist.dir}" includes="Lib/**" excludes="Lib/test/**,Lib/email/test/**"/>
 
-            <manifest>
-                <attribute name="Main-Class" value="org.python.util.jython" />
-                <attribute name="Built-By" value="${user.name}" />
-                <!-- info section. ATTN: no blanks, no '.' in the names -->
-                <section name="Build-Info">
-                    <attribute name="version" value="${jython.version}" />
-                    <attribute name="svn-build" value="${do.checkout}" />
-                    <attribute name="oracle" value="${oracle.present}" />
-                    <attribute name="informix" value="${informix.present}" />
-                    <attribute name="build-compiler" value="${build.compiler}" />
-                    <attribute name="jdk-target-version" value="${jdk.target.version}" />
-                    <attribute name="debug" value="${debug}" />
-                </section>
-            </manifest>
         </jarjar>
     	<!-- TODO: jar update manifest (at least Main-Class is missing -->
     </target>
