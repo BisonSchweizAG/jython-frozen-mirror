@@ -675,9 +675,7 @@ The readme text for the next release will be like:
         <jarjar destfile="${dist.dir}/${jython.standalone.jar}">
             <zipfileset src="${dist.dir}/${jython.deploy.jar}"/>
             <fileset dir="${dist.dir}" includes="Lib/**" excludes="Lib/test/**,Lib/email/test/**"/>
-
         </jarjar>
-    	<!-- TODO: jar update manifest (at least Main-Class is missing -->
     </target>
 
     <target name="jar" depends="compile,expose">
@@ -755,9 +753,22 @@ The readme text for the next release will be like:
         <delete includeemptydirs="false" failonerror="false">
             <fileset dir="${dist.dir}/artifactory" includes="**/*" />
         </delete>
-        <copy file="${dist.dir}/${jython.standalone.jar}" tofile="${dist.dir}/artifactory/${jython.artifactory.jar}"         preservelastmodified="true" verbose="true" />
         <copy file="${dist.dir}/${jython.sources.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.sources.jar}" preservelastmodified="true" verbose="true" />
         <copy file="${dist.dir}/${jython.javadoc.jar}"    tofile="${dist.dir}/artifactory/${jython.artifactory.javadoc.jar}" preservelastmodified="true" verbose="true" />
+        <jar destfile="${dist.dir}/artifactory/${jython.artifactory.jar}">
+            <zipfileset excludes="META-INF/MANIFEST.MF" src="${dist.dir}/${jython.standalone.jar}"/>
+            <manifest>
+                <attribute name="Implementation-Title" value="Jython for Bison" />
+                <attribute name="Implementation-Version" value="${jython.version}" />
+                <attribute name="Main-Class" value="org.python.util.jython" />
+                <attribute name="Built-By" value="${user.name}" />
+                <!-- info section. ATTN: no blanks, no '.' in the names -->
+                <section name="build/info-section">
+                    <attribute name="jdk-target-version" value="${jdk.target.version}" />
+                    <attribute name="debug" value="${debug}" />
+                </section>
+            </manifest>
+    	</jar>    	
     </target>
 
     <target name="remove-precompiled-files">
