@@ -20,15 +20,15 @@
 - run the `regrtests` launch configuration <br/>(on Mac: eagerly picks the latest installed JDK -> tweak `dist/bin/jython` to use jdk 11 and `--illegal-access=warn`, around line 263)
 - on Ubuntu, the result of the 'regrtests' is as follows:
 ```
-     [exec] 323 tests OK.
+     [exec] 317 tests OK.
      [exec] 3 tests skipped:
      [exec]     test_subprocess test_urllib2net test_urllibnet
-     [exec] 7 tests failed:
-     [exec]     test_float_jy test_import_jy test_marshal test_platform
-     [exec]     test_socket test_sort test_traceback
-     [exec] 7 fails unexpected:
-     [exec]     test_float_jy test_import_jy test_marshal test_platform
-     [exec]     test_socket test_sort test_traceback
+     [exec] 6 tests failed:
+     [exec]     test_float_jy test_marshal test_platform test_select_new test_sort
+     [exec]     test_traceback
+     [exec] 6 fails unexpected:
+     [exec]     test_float_jy test_marshal test_platform test_select_new test_sort
+     [exec]     test_traceback
      [exec] Result: 1
 ```
 
