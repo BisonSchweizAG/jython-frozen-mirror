@@ -114,6 +114,15 @@ public class PySystemStateTest extends TestCase {
         }
     }
 
+    public void testGetPlatformEncoding() {
+        String platformEncoding = PySystemState.getPlatformEncoding();
+        if (Platform.IS_WINDOWS) {
+            assertEquals("ISO-8859-1", platformEncoding);
+        } else {
+            assertEquals("UTF-8", platformEncoding);
+        }
+    }
+    
     private void assertJarFilenameURL_jboss8(String expectedJarFilename, String filename) throws MalformedURLException {
         final String protocol = "vfs";
         assertJarFilenameURL(expectedJarFilename, filename, protocol);

@@ -11,10 +11,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.UnsupportedCharsetException;
 import java.security.AccessControlException;
 import java.util.LinkedHashSet;
@@ -661,36 +661,15 @@ public class PySystemState extends PyObject implements ClassDictInit {
     }
     
     /**
-     * @return the encoding of the underlying platform; can be <code>null</code>
+     * @return the encoding of the underlying platform
      */
-    private static String getPlatformEncoding() {
-        // first try to grab the Console encoding
-        String encoding = getConsoleEncoding();
-        if (encoding == null) {
-            try {
-                encoding = System.getProperty("file.encoding");
-            } catch (SecurityException se) {
-                // ignore, can't do anything about it
-            }
+    protected static String getPlatformEncoding() {
+        // take the shortcut
+        if (Platform.IS_WINDOWS) {
+            return StandardCharsets.ISO_8859_1.name();
+        } else {
+            return StandardCharsets.UTF_8.name();
         }
-        return encoding;
-    }
-
-    /**
-     * @return the console encoding; can be <code>null</code>
-     */
-    private static String getConsoleEncoding() {
-        String encoding = null;
-        try {
-            // the Console class is only present in java 6 - have to use reflection
-            Class<?> consoleClass = Class.forName("java.io.Console");
-            Method encodingMethod = consoleClass.getDeclaredMethod("encoding");
-            encodingMethod.setAccessible(true); // private static method
-            encoding = (String)encodingMethod.invoke(consoleClass);
-        } catch (Exception e) {
-            // ignore any exception
-        }
-        return encoding;
     }
     
     private static void addRegistryFile(File file) {
@@ -822,7 +801,7 @@ public class PySystemState extends PyObject implements ClassDictInit {
             Py.writeDebug("initializer", "'" + INITIALIZER_SERVICE + "' not found on " + initializerClassLoader);
             return false;
         }
-        BufferedReader r = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
+        BufferedReader r = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         String className;
         try {
             className = r.readLine();
