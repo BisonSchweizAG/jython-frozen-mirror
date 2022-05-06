@@ -43,8 +43,8 @@
   * `java -version` should print `Java(TM) SE Runtime Environment (build 1.7.0_nn-bnn)` where `nn` is any number
   * `ant -buildfile ./build.xml clean`   
   * `ant -buildfile ./build.xml developer-build`
-  * `ant -buildfile ./build.xml javatest`
-  * `ant -buildfile ./build.xml regrtest`
+  * in another console, with jdk 11: `ant -buildfile ./build.xml javatest`
+  * in another console, with jdk 11: `ant -buildfile ./build.xml regrtest`
   * `ant -buildfile ./build.xml artifactory`
 * deploy `/dist/artifactory/jython*-sources.jar` to `/ext-libs-local-modified/org/python/jython`
   * check the Deploy as Maven Artifact checkbox
