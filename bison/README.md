@@ -13,8 +13,8 @@
 
 
 ## Build and test as a developer
-- run the `clean` launch configuration
-- run the `build developer` launch configuration (the first run just after `clean` might fail - run again in this case)
+- run the `clean` launch configuration (make sure to run it with jdk 11)
+- run the `build developer` launch configuration (the first run just after `clean` might fail - run again in this case) (make sure to run it with jdk 11)
 - run the `javatests` launch configuration (make sure to run it with jdk 11)
 - run the `bugtests` launch configuration (make sure to run with jdk 11)
 - run the `regrtests` launch configuration <br/>(on Mac: eagerly picks the latest installed JDK -> tweak `dist/bin/jython` to use jdk 11 and `--illegal-access=warn`, around line 263)
@@ -33,7 +33,7 @@
 ```
 
 
-## Build a deployable version 
+## Build a deployable version (all on the command line with jdk 1.7 !)
 * check/update the `jython.version`(s) in `ant.properties`
 * if necessary, add a new tag like `git tag -a v2.5.3.5 -m "Jython version 2.5.3.5"`
 * if necessary, push the new tag like `git push origin v2.5.3.5`
