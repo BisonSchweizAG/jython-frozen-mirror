@@ -36,6 +36,8 @@ import org.python.expose.ExposedType;
 public class PyFile extends PyObject {
 
     public static final PyType TYPE = PyType.fromClass(PyFile.class);
+    
+    private static final String PYTHON_LAUNCHER_TTY = "python.launcher.tty";
 
     /** The filename */
     @ExposedGet(doc = BuiltinDocs.file_name_doc)
@@ -482,7 +484,7 @@ public class PyFile extends PyObject {
 
     @ExposedMethod(doc = BuiltinDocs.file_isatty_doc)
     final boolean file_isatty() {
-        return file.isatty();
+        return Boolean.getBoolean(PYTHON_LAUNCHER_TTY);
     }
 
     public PyObject fileno() {
