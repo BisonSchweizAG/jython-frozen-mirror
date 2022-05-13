@@ -1,4 +1,3 @@
+This is left when explicitly using posixpath.py:
 Illegal reflective access by org.jruby.ext.posix.util.FieldAccess (/jython/extlibs/jnr-posix.jar) to field java.io.FileDescriptor.fd
 Illegal reflective access by org.jruby.ext.posix.util.FieldAccess (/jython/extlibs/jnr-posix.jar) to field java.io.FileDescriptor.handle
-Illegal reflective access by org.python.core.io.StreamIO (/jython/dist/jython-dev.jar) to field java.io.FilterInputStream.in
-Illegal reflective access by org.python.core.io.StreamIO (/jython/dist/jython-dev.jar) to field java.io.FilterOutputStream.out
