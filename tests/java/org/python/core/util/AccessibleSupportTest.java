@@ -243,6 +243,9 @@ public class AccessibleSupportTest extends TestCase {
         }
     }
 
+    /**
+     * This test method provokes an illegal access warning on JDK 11
+     */
     public void testInvokeMethod_illegalButExplicitlyAllowed() throws ClassNotFoundException, NoSuchMethodException,
                     SecurityException, IllegalArgumentException, InvocationTargetException, IllegalAccessException {
         Class<?> declaringClass = Class.forName("sun.nio.ch.FileChannelImpl");
