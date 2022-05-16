@@ -13,6 +13,10 @@ for manipulation of the pathname component of URLs.
 import os
 import stat
 
+from java.nio.file import Files
+from java.nio.file import Path
+from java.nio.file import Paths
+
 __all__ = ["normcase","isabs","join","splitdrive","split","splitext",
            "basename","dirname","commonprefix","getsize","getmtime",
            "getatime","getctime","islink","exists","lexists","isdir","isfile",
@@ -191,11 +195,10 @@ def lexists(path):
 
 def isdir(path):
     """Test whether a path is a directory"""
-    try:
-        st = os.stat(path)
-    except os.error:
-        return False
-    return stat.S_ISDIR(st.st_mode)
+    nioPath = Paths.get(path)
+    if Files.exists(nioPath):
+        return Files.isDirectory(nioPath)
+    return False
 
 
 # Is a path a regular file?
