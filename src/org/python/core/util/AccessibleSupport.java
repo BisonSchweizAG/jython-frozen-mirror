@@ -38,6 +38,7 @@ public final class AccessibleSupport {
         FORBIDDEN_PACKAGES.add("java.awt.");
         FORBIDDEN_PACKAGES.add("java.io.");
         FORBIDDEN_PACKAGES.add("java.lang.");
+        FORBIDDEN_PACKAGES.add("java.nio.");
         FORBIDDEN_PACKAGES.add("sun.");
     }
 
