@@ -102,7 +102,7 @@ public class PosixModule implements ClassDictInit {
         // Successful termination
         dict.__setitem__("EX_OK", Py.Zero);
 
-        boolean nativePosix = false;
+        boolean nativePosix = !Platform.IS_WINDOWS;
         dict.__setitem__("_native_posix", Py.newBoolean(nativePosix));
         dict.__setitem__("_posix_impl", Py.java2py(posix));
         dict.__setitem__("environ", getEnviron());
