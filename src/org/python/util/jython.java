@@ -239,9 +239,10 @@ public class jython {
                        throw Py.IOError(e);
                    }
                    try {
-                       if (PosixModule.getPOSIX().isatty(file.getFD())) {
+                       PyFile pyFile = new PyFile(file);
+                       if (pyFile.isatty()) {
                            opts.interactive = true;
-                           interp.interact(null, new PyFile(file));
+                           interp.interact(null, pyFile);
                            return;
                        } else {
                            interp.execfile(file, opts.filename);
