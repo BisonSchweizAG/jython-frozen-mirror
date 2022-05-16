@@ -159,11 +159,8 @@ def getctime(filename):
 
 def islink(path):
     """Test whether a path is a symbolic link"""
-    try:
-        st = os.lstat(path)
-    except (os.error, AttributeError):
-        return False
-    return stat.S_ISLNK(st.st_mode)
+    nioPath = Paths.get(path)
+    return Files.isSymbolicLink(nioPath)
 
 
 # Does a path exist?
