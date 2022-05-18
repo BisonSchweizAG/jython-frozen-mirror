@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
+import org.python.core.util.AccessibleSupport;
 import org.python.expose.ExposeAsSuperclass;
 import org.python.expose.ExposedDelete;
 import org.python.expose.ExposedGet;
@@ -1310,7 +1311,7 @@ public class PyType extends PyObject implements Serializable {
             if (forClass == null) {
                 continue;
             }
-            for (Class<?> inner : forClass.getClasses()) {
+            for (Class<?> inner : AccessibleSupport.getClasses(forClass)) {
                 // Only add the class if there isn't something else with that name and it came from this
                 // class
                 if (inner.getDeclaringClass() == forClass &&

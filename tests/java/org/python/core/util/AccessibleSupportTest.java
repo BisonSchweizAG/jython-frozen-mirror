@@ -268,6 +268,23 @@ public class AccessibleSupportTest extends TestCase {
         assertEquals("java.math.BigDecimal", AccessibleSupport.invokeMethod(method, BigDecimal.class, new Object[0]));
     }
 
+    public void testGetClasses() throws ClassNotFoundException {
+        Class<?>[] classes = AccessibleSupport.getClasses(Thread.class);
+        assertTrue(classes.length >= 2);
+        Class<?> class0 = classes[0];
+        assertTrue(class0.isInterface());
+        assertEquals("UncaughtExceptionHandler", class0.getSimpleName());
+        Class<?> class1 = classes[1];
+        assertFalse(class1.isInterface());
+        assertEquals("State", class1.getSimpleName());
+    }
+
+    public void testGetClasses_Blocked() throws ClassNotFoundException {
+        Class<?> declaringClass = Class.forName("sun.nio.ch.FileChannelImpl");
+        assertNotNull(declaringClass);
+        assertEquals(0, AccessibleSupport.getClasses(declaringClass).length);
+    }
+
     private void setAllowAnyMethodCalls(boolean allowAnyMethodCalls) {
         try {
             Field field = AccessibleSupport.class.getDeclaredField("ALLOW_ANY_METHOD_CALLS");

@@ -112,6 +112,27 @@ public final class AccessibleSupport {
     }
 
     /**
+     * Returns an array containing {@code Class} objects representing all the public classes and interfaces that are
+     * members of the {@code declaringClass} object.
+     * <p>
+     * Prevents runtime exceptions for classes in very closed packages. Note that calls to {@code Class.getClasses()}
+     * would really throw a {@code RuntimeException} in these cases.
+     * 
+     * @param declaringClass
+     *            The class for which the classes are returned
+     * 
+     * @return The array of {@code Class} objects representing the public members of this class. This array can be
+     *         empty.
+     */
+    public static Class<?>[] getClasses(Class<?> declaringClass) {
+        if (blocksCallsToForbiddenPackage(declaringClass)) {
+            return new Class[0];
+        } else {
+            return declaringClass.getClasses();
+        }
+    }
+
+    /**
      * Try to {@code setAccessible(true)} on a single method <b>regardless</b> of its modifier - but only if allowed.
      * 
      * @param method
