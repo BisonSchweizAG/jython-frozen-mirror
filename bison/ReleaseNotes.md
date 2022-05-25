@@ -33,7 +33,8 @@ To workaround this, you need to add all the necessary `--add-opens` flags, plus 
 Some smaller changes are:
  - Use default platform encodings (`StandardCharsets.ISO_8859_1` for Windows, `StandardCharsets.UTF_8` for all other platforms)
  - Use [guava-7.0.1](https://github.com/ohumbel/guava/releases/tag/v7.0.1)
- - Detect `isatty()` solely by using the value of the system property `-Dpython.launcher.tty=true` or `-Dpython.launcher.tty=false`
+ - Detect `isatty()` solely by using the value of the system property `-Dpython.launcher.tty` which defaults to `false`.
+   For an interactive console, `-Dpython.launcher.tty=true` is now mandatory
  - Implement some `posixpath` methods in pure Java, with slightly reduced functionality
 
 And - last but not least - `jython-2.5.3.5.jar` now has a ``Main-Class: org.python.util.jython` attribute in its `MANIFEST.MF` again.
