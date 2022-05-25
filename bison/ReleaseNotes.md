@@ -37,4 +37,4 @@ Some smaller changes are:
    For an interactive console, `-Dpython.launcher.tty=true` is now mandatory
  - Implement some `posixpath` methods in pure Java, with slightly reduced functionality
 
-And - last but not least - `jython-2.5.3.5.jar` now has a ``Main-Class: org.python.util.jython` attribute in its `MANIFEST.MF` again.
+And - last but not least - `jython-2.5.3.5.jar` now has a `Main-Class: org.python.util.jython` attribute in its `MANIFEST.MF` again.
