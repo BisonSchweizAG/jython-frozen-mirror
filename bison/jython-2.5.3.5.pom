@@ -23,9 +23,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>git@github.com:BisonSchweizAG/jython.git</connection>
-        <developerConnection>git@github.com:BisonSchweizAG/jython.git</developerConnection>
-        <url>https://github.com/BisonSchweizAG/jython</url>
+        <connection>git@github.com:BisonSchweizAG/jython-frozen-mirror.git</connection>
+        <developerConnection>git@github.com:BisonSchweizAG/jython-frozen-mirror.git</developerConnection>
+        <url>https://github.com/BisonSchweizAG/jython-frozen-mirror</url>
     </scm>
     <!-- Just put my name in for now to make the maven uploader happy -->
     <developers>
