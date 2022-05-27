@@ -35,8 +35,8 @@
 
 ## Build a deployable version (all on the command line with jdk 1.7 !)
 * check/update the `jython.version`(s) in `ant.properties`
-* if necessary, add a new tag like `git tag -a v2.5.3.5 -m "Jython version 2.5.3.5"`
-* if necessary, push the new tag like `git push origin v2.5.3.5`
+* if necessary, add a new tag like `git tag -a v2.5.3.6 -m "Jython version 2.5.3.6"`
+* if necessary, push the new tag like `git push origin v2.5.3.6`
 * setup your shell to use ant 1.9.16 and jdk 7 to run the builds from the command line (jarjar-0.7 does **not** work with jdk >= 8)
   * `cd jython` (to the directory containing `build.xml`)
   * `ant -version` should print `Apache Ant(TM) version 1.9.16 compiled on July 10 2021`
